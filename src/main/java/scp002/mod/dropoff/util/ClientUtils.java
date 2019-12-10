@@ -1,38 +1,39 @@
 package scp002.mod.dropoff.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import scp002.mod.dropoff.DropOff;
+import scp002.mod.dropoff.message.C2SPacketRequestDropoff;
+import scp002.mod.dropoff.message.PacketHandler;
 
 public class ClientUtils {
 
     public static void printToChat(String message) {
         message = "[" + TextFormatting.BLUE + DropOff.MOD_NAME + TextFormatting.RESET + "]: " + message;
 
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
-        TextComponentString textComponentString = new TextComponentString(message);
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        StringTextComponent textComponentString = new StringTextComponent(message);
 
         player.sendMessage(textComponentString);
     }
 
     public static void playSound(SoundEvent soundEvent) {
-        SoundHandler soundHandler = Minecraft.getMinecraft().getSoundHandler();
-        PositionedSoundRecord record = PositionedSoundRecord.getMasterRecord(soundEvent, 1.0f);
+        SoundHandler soundHandler = Minecraft.getInstance().getSoundHandler();
+        SimpleSound record = SimpleSound.master(soundEvent, 1.0f);
 
-        soundHandler.playSound(record);
+        soundHandler.play(record);
     }
 
-    public static void sendNoSpectator(IMessage message) {
-        if (Minecraft.getMinecraft().player.isSpectator()) {
+    public static void sendNoSpectator() {
+        if (Minecraft.getInstance().player.isSpectator()) {
             printToChat("Action do not allowed in spectator mode.");
         } else {
-            DropOff.NETWORK.sendToServer(message);
+            PacketHandler.INSTANCE.sendToServer(new C2SPacketRequestDropoff());
         }
     }
 

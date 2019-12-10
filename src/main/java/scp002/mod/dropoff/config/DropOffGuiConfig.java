@@ -1,19 +1,16 @@
 package scp002.mod.dropoff.config;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.common.config.ConfigCategory;
-import net.minecraftforge.common.config.ConfigElement;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraftforge.fml.client.config.DummyConfigElement;
-import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import scp002.mod.dropoff.DropOff;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class DropOffGuiConfig extends GuiConfig {
 
-    public DropOffGuiConfig(GuiScreen parent) {
+    public DropOffGuiConfig(Screen parent) {
         super(parent, getConfigElements(), DropOff.MOD_ID, false, false,
                 getAbridgedConfigPath(DropOffConfig.INSTANCE.getConfig().getConfigFile().toString()));
     }
@@ -36,4 +33,4 @@ public class DropOffGuiConfig extends GuiConfig {
         return new DummyConfigElement.DummyCategoryElement(name, langKey, configElements);
     }
 
-}
+}*/

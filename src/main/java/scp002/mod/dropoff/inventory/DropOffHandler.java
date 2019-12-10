@@ -1,6 +1,6 @@
 package scp002.mod.dropoff.inventory;
 
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -10,7 +10,7 @@ import scp002.mod.dropoff.config.DropOffConfig;
 public class DropOffHandler {
 
     private final InventoryManager inventoryManager;
-    private final InventoryPlayer playerInventory;
+    private final PlayerInventory playerInventory;
     private final NonNullList<ItemStack> playerStacks;
     private int itemsCounter;
     private int startSlot;
@@ -46,8 +46,8 @@ public class DropOffHandler {
         }
 
         for (int i = InventoryManager.Slots.PLAYER_INVENTORY_FIRST; i < playerStacks.size(); ++i) {
-            if (!playerStacks.get(i).isEmpty() && isItemValid(playerStacks.get(i).getDisplayName())) {
-                if (DropOffConfig.INSTANCE.dropOffOnlyFullStacks &&
+            if (!playerStacks.get(i).isEmpty() && isItemValid(playerStacks.get(i).getDisplayName().getUnformattedComponentText())) {
+                if (DropOffConfig.dropOffOnlyFullStacks.get() &&
                         playerStacks.get(i).getCount() <
                                 inventoryManager.getMaxAllowedStackSize(playerInventory, playerStacks.get(i))) {
                     continue;
@@ -71,8 +71,8 @@ public class DropOffHandler {
      * This method checks the config text field to determine whether to DropOff the item with the specified name or not.
      */
     private boolean isItemValid(String name) {
-        String[] itemNames = StringUtils.split(DropOffConfig.INSTANCE.excludeItemsWithNames,
-                DropOffConfig.INSTANCE.delimiter);
+        String[] itemNames = StringUtils.split(DropOffConfig.excludeItemsWithNames.get(),
+                DropOffConfig.delimiter);
 
         for (String itemName : itemNames) {
             String regex = itemName.replace("*", ".*").trim();

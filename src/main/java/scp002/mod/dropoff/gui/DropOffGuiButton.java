@@ -10,16 +10,15 @@ class DropOffGuiButton extends GuiButtonExt {
 
     final List<String> hoverText = new ArrayList<>();
 
-    DropOffGuiButton() {
-        super(0, 0, 0, 10, 10, "^");
+    DropOffGuiButton(IPressable callback) {
+        super(0, 0, 0, 10, "^",callback);
 
         hoverText.add("DropOff items from the player");
         hoverText.add("inventory to the nearby containers.");
     }
 
     @Override
-    public void playPressSound(SoundHandler soundHandler) {
-        //
-    }
+    public void playDownSound(SoundHandler p_playDownSound_1_) {
 
+    }
 }

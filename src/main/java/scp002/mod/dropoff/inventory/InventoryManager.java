@@ -1,17 +1,17 @@
 package scp002.mod.dropoff.inventory;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import org.apache.commons.lang3.StringUtils;
 import scp002.mod.dropoff.config.DropOffConfig;
 
@@ -21,27 +21,27 @@ import java.util.List;
 
 public class InventoryManager {
 
-    private final EntityPlayerMP player;
+    private final ServerPlayerEntity player;
     private final World world;
 
-    public InventoryManager(EntityPlayerMP player) {
+    public InventoryManager(ServerPlayerEntity player) {
         this.player = player;
         world = player.getEntityWorld();
     }
 
-    EntityPlayerMP getPlayer() {
+    ServerPlayerEntity getPlayer() {
         return player;
     }
 
-    public <T extends TileEntity & IInventory> List<InventoryData> getNearbyInventories() {
-        int minX = (int) (player.posX - DropOffConfig.INSTANCE.scanRadius);
-        int maxX = (int) (player.posX + DropOffConfig.INSTANCE.scanRadius);
+    public <T extends TileEntity> List<InventoryData> getNearbyInventories() {
+        int minX = (int) (player.posX - DropOffConfig.scanRadius.get());
+        int maxX = (int) (player.posX + DropOffConfig.scanRadius.get());
 
-        int minY = (int) (player.posY - DropOffConfig.INSTANCE.scanRadius);
-        int maxY = (int) (player.posY + DropOffConfig.INSTANCE.scanRadius);
+        int minY = (int) (player.posY - DropOffConfig.scanRadius.get());
+        int maxY = (int) (player.posY + DropOffConfig.scanRadius.get());
 
-        int minZ = (int) (player.posZ - DropOffConfig.INSTANCE.scanRadius);
-        int maxZ = (int) (player.posZ + DropOffConfig.INSTANCE.scanRadius);
+        int minZ = (int) (player.posZ - DropOffConfig.scanRadius.get());
+        int maxZ = (int) (player.posZ + DropOffConfig.scanRadius.get());
 
         List<InventoryData> inventoryDataList = new ArrayList<>();
 
@@ -53,11 +53,10 @@ public class InventoryManager {
 
                     InventoryData currentInvData;
 
-                    if (currentEntity instanceof IInventory) {
-                        //noinspection unchecked
-                        currentInvData = getInventoryData((T) currentEntity);
-                    } else if (currentEntity instanceof TileEntityEnderChest) {
-                        currentInvData = getInventoryData((TileEntityEnderChest) currentEntity);
+                    if (currentEntity != null && currentEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
+                        currentInvData = getInventoryData(currentEntity);
+                    } else if (currentEntity instanceof EnderChestTileEntity) {
+                        currentInvData = getInventoryData((EnderChestTileEntity) currentEntity);
                     } else {
                         continue;
                     }
@@ -84,10 +83,10 @@ public class InventoryManager {
     }
 
     boolean isStacksEqual(ItemStack left, ItemStack right) {
-        NBTTagCompound leftTag = left.getTagCompound();
-        NBTTagCompound rightTag = right.getTagCompound();
+        CompoundNBT leftTag = left.getTag();
+        CompoundNBT rightTag = right.getTag();
 
-        return left.getItem() == right.getItem() && left.getItemDamage() == right.getItemDamage() &&
+        return left.getItem() == right.getItem() &&
                 ((leftTag == null && rightTag == null) || (leftTag != null && leftTag.equals(rightTag)));
     }
 
@@ -96,23 +95,22 @@ public class InventoryManager {
      * corresponds to it.
      */
     String getItemStackName(IInventory inventory) {
-        if (inventory instanceof InventoryLargeChest) {
-            return Block.getBlockById(54).getLocalizedName();
+        if (inventory instanceof DoubleSidedInventory) {
+            return "chest";//Block.getBlockById(54).getLocalizedName();
         }
 
-        if (inventory instanceof TileEntityBrewingStand) {
-            return Block.getBlockById(117).getLocalizedName();
+        if (inventory instanceof BrewingStandTileEntity) {
+            return "brewingstand";//Block.getBlockById(117).getLocalizedName();
         }
 
         if (inventory instanceof TileEntity) {
             TileEntity entity = (TileEntity) inventory;
-            ItemStack itemStack = new ItemStack(entity.getBlockType(), 1, entity.getBlockMetadata());
+            ItemStack itemStack = new ItemStack(entity.getBlockState().getBlock());
 
-            return itemStack.getDisplayName();
+            return itemStack.getDisplayName().getUnformattedComponentText();
         }
 
-        //noinspection deprecation
-        return I18n.translateToLocal(inventory.getName());
+        return I18n.format(inventory.toString());
     }
 
     int getMaxAllowedStackSize(IInventory inventory, ItemStack stack) {
@@ -125,45 +123,45 @@ public class InventoryManager {
     private boolean isInventoryValid(InventoryData inventoryData) {
         TileEntity entity = inventoryData.getEntities().get(0);
 
-        if (entity instanceof TileEntityBeacon) {
-            return DropOffConfig.INSTANCE.checkBeacons;
+        if (entity instanceof BeaconTileEntity) {
+            return DropOffConfig.checkBeacons.get();
         }
 
-        if (entity instanceof TileEntityBrewingStand) {
-            return DropOffConfig.INSTANCE.checkBrewingStands;
+        if (entity instanceof BrewingStandTileEntity) {
+            return DropOffConfig.checkBrewingStands.get();
         }
 
-        if (entity instanceof TileEntityChest) {
-            return DropOffConfig.INSTANCE.checkChests;
+        if (entity instanceof ChestTileEntity) {
+            return DropOffConfig.checkChests.get();
         }
 
-        if (entity instanceof TileEntityDispenser) {
-            if (entity instanceof TileEntityDropper) {
-                return DropOffConfig.INSTANCE.checkDroppers;
+        if (entity instanceof DispenserTileEntity) {
+            if (entity instanceof DropperTileEntity) {
+                return DropOffConfig.checkDroppers.get();
             }
 
-            return DropOffConfig.INSTANCE.checkDispensers;
+            return DropOffConfig.checkDispensers.get();
         }
 
-        if (entity instanceof TileEntityEnderChest) {
-            return DropOffConfig.INSTANCE.checkEnderChests;
+        if (entity instanceof EnderChestTileEntity) {
+            return DropOffConfig.checkEnderChests.get();
         }
 
-        if (entity instanceof TileEntityFurnace) {
-            return DropOffConfig.INSTANCE.checkFurnaces;
+        if (entity instanceof FurnaceTileEntity) {
+            return DropOffConfig.checkFurnaces.get();
         }
 
-        if (entity instanceof TileEntityHopper) {
-            return DropOffConfig.INSTANCE.checkHoppers;
+        if (entity instanceof HopperTileEntity) {
+            return DropOffConfig.checkHoppers.get();
         }
 
-        if (entity instanceof TileEntityShulkerBox) {
-            return DropOffConfig.INSTANCE.checkShulkerBoxes;
+        if (entity instanceof ShulkerBoxTileEntity) {
+            return DropOffConfig.checkShulkerBoxes.get();
         }
 
         String inventoryName = getItemStackName(inventoryData.getInventory());
 
-        return isInventoryNameValid(inventoryName) || DropOffConfig.INSTANCE.dropOffEveryPlace;
+        return isInventoryNameValid(inventoryName) || DropOffConfig.dropOffEveryPlace.get();
     }
 
     /**
@@ -172,7 +170,7 @@ public class InventoryManager {
      */
     private boolean isInventoryNameValid(String name) {
         String[] containerNames =
-                StringUtils.split(DropOffConfig.INSTANCE.processContainersWithNames, DropOffConfig.INSTANCE.delimiter);
+                StringUtils.split(DropOffConfig.processContainersWithNames.get(), DropOffConfig.delimiter);
 
         for (String containerName : containerNames) {
             String regex = containerName.replace("*", ".*").trim();
@@ -186,24 +184,22 @@ public class InventoryManager {
     }
 
     // Implemented without a loop, because the order of the arguments in the "new InventoryLargeChest()" is important.
-    private <T extends TileEntity & IInventory> InventoryData getInventoryData(T leftEntity) {
+    private InventoryData getInventoryData(TileEntity leftEntity) {
         List<TileEntity> entities = new ArrayList<>();
 
-        if (leftEntity instanceof TileEntityChest) {
-            String chestName = "container.chestDouble";
+        if (leftEntity instanceof ChestTileEntity) {
 
-            IBlockState leftBlockState = world.getBlockState(leftEntity.getPos());
+            BlockState leftBlockState = world.getBlockState(leftEntity.getPos());
 
             BlockPos rightBlockPos = new BlockPos(leftEntity.getPos().getX() - 1, leftEntity.getPos().getY(),
                     leftEntity.getPos().getZ());
             TileEntity rightEntity = world.getTileEntity(rightBlockPos);
-            IBlockState rightBlockState = world.getBlockState(rightBlockPos);
+            BlockState rightBlockState = world.getBlockState(rightBlockPos);
 
             // ----------------------------------------Check for trapped chests-----------------------------------------
             if (leftBlockState.canProvidePower()) {
-                if (rightEntity instanceof TileEntityChest && rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) rightEntity, (ILockableContainer) leftEntity);
+                if (rightEntity instanceof ChestTileEntity && rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory((ChestTileEntity)rightEntity, leftEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -216,9 +212,9 @@ public class InventoryManager {
                 rightEntity = world.getTileEntity(rightBlockPos);
                 rightBlockState = world.getBlockState(rightBlockPos);
 
-                if (rightEntity instanceof TileEntityChest && rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) leftEntity, (ILockableContainer) rightEntity);
+                if (rightEntity instanceof ChestTileEntity && rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory(
+                            leftEntity, (ChestTileEntity) rightEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -231,9 +227,9 @@ public class InventoryManager {
                 rightEntity = world.getTileEntity(rightBlockPos);
                 rightBlockState = world.getBlockState(rightBlockPos);
 
-                if (rightEntity instanceof TileEntityChest && rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) rightEntity, (ILockableContainer) leftEntity);
+                if (rightEntity instanceof ChestTileEntity && rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory(
+                            (ChestTileEntity) rightEntity, leftEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -246,9 +242,9 @@ public class InventoryManager {
                 rightEntity = world.getTileEntity(rightBlockPos);
                 rightBlockState = world.getBlockState(rightBlockPos);
 
-                if (rightEntity instanceof TileEntityChest && rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) leftEntity, (ILockableContainer) rightEntity);
+                if (rightEntity instanceof ChestTileEntity && rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory(
+                            leftEntity, (ChestTileEntity) rightEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -256,9 +252,9 @@ public class InventoryManager {
                     return new InventoryData(entities, largeChest, InteractionResult.DROPOFF_FAIL);
                 }
             } else { // ------------------------------------Check for regular chests------------------------------------
-                if (rightEntity instanceof TileEntityChest && !rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) rightEntity, (ILockableContainer) leftEntity);
+                if (rightEntity instanceof ChestTileEntity && !rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory(
+                            (ChestTileEntity) rightEntity, leftEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -271,9 +267,9 @@ public class InventoryManager {
                 rightEntity = world.getTileEntity(rightBlockPos);
                 rightBlockState = world.getBlockState(rightBlockPos);
 
-                if (rightEntity instanceof TileEntityChest && !rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) leftEntity, (ILockableContainer) rightEntity);
+                if (rightEntity instanceof ChestTileEntity && !rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory(
+                            leftEntity, (ChestTileEntity) rightEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -286,9 +282,9 @@ public class InventoryManager {
                 rightEntity = world.getTileEntity(rightBlockPos);
                 rightBlockState = world.getBlockState(rightBlockPos);
 
-                if (rightEntity instanceof TileEntityChest && !rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) rightEntity, (ILockableContainer) leftEntity);
+                if (rightEntity instanceof ChestTileEntity && !rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory(
+                            (ChestTileEntity) rightEntity, leftEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -301,9 +297,9 @@ public class InventoryManager {
                 rightEntity = world.getTileEntity(rightBlockPos);
                 rightBlockState = world.getBlockState(rightBlockPos);
 
-                if (rightEntity instanceof TileEntityChest && !rightBlockState.canProvidePower()) {
-                    InventoryLargeChest largeChest = new InventoryLargeChest(chestName,
-                            (ILockableContainer) leftEntity, (ILockableContainer) rightEntity);
+                if (rightEntity instanceof ChestTileEntity && !rightBlockState.canProvidePower()) {
+                    DoubleSidedInventory largeChest = new DoubleSidedInventory(
+                            leftEntity, (ChestTileEntity) rightEntity);
 
                     entities.add(leftEntity);
                     entities.add(rightEntity);
@@ -318,7 +314,7 @@ public class InventoryManager {
         return new InventoryData(entities, leftEntity, InteractionResult.DROPOFF_FAIL);
     }
 
-    private InventoryData getInventoryData(TileEntityEnderChest entity) {
+    private InventoryData getInventoryData(EnderChestTileEntity entity) {
         List<TileEntity> entities = Collections.singletonList(entity);
 
         return new InventoryData(entities, player.getInventoryEnderChest(), InteractionResult.DROPOFF_FAIL);

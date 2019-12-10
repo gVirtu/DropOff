@@ -1,7 +1,7 @@
 package scp002.mod.dropoff.render;
 
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class RenderWorldLastEventHandler {
 

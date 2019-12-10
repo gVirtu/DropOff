@@ -1,15 +1,14 @@
 package scp002.mod.dropoff.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraftforge.fml.client.IModGuiFactory;
-import scp002.mod.dropoff.config.DropOffGuiConfig;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
 
-@SuppressWarnings("unused")
+/*
 public class GuiFactory implements IModGuiFactory {
 
     @Override
@@ -23,7 +22,7 @@ public class GuiFactory implements IModGuiFactory {
     }
 
     @Override
-    public GuiScreen createConfigGui(@Nonnull GuiScreen parentScreen) {
+    public Screen createConfigGui(@Nonnull Screen parentScreen) {
         return new DropOffGuiConfig(parentScreen);
     }
 
@@ -33,4 +32,4 @@ public class GuiFactory implements IModGuiFactory {
         return null;
     }
 
-}
+}*/

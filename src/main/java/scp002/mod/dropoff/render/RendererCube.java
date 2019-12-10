@@ -1,7 +1,7 @@
 package scp002.mod.dropoff.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import org.lwjgl.opengl.GL11;
@@ -27,8 +27,8 @@ public class RendererCube {
      * It does nothing until the draw() method assign the necessary delay to the global field named currentTime.
      */
     void tryToRender(RenderWorldLastEvent event) {
-        if (System.currentTimeMillis() >= currentTime + DropOffConfig.INSTANCE.highlightDelay &&
-                DropOffConfig.INSTANCE.highlightDelay >= 0L) {
+        if (System.currentTimeMillis() >= currentTime + DropOffConfig.Client.highlightDelay.get() &&
+                DropOffConfig.Client.highlightDelay.get() >= 0L) {
             return;
         }
 
@@ -40,7 +40,7 @@ public class RendererCube {
     }
 
     private void prepareToRender(RenderWorldLastEvent event, Color color) {
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
 
         double playerX = player.prevPosX + (player.posX - player.prevPosX) * event.getPartialTicks() - 0.5;
         double playerY = player.prevPosY + (player.posY - player.prevPosY) * event.getPartialTicks();
@@ -54,7 +54,7 @@ public class RendererCube {
         GL11.glLineWidth(1.0f);
         GL11.glColor3ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue());
         GL11.glPushMatrix();
-        GL11.glTranslated(-playerX, -playerY, -playerZ);
+        GL11.glTranslated(-playerX, -playerY - player.getEyeHeight(), -playerZ);
     }
 
     private void render(BlockPos blockPos) {

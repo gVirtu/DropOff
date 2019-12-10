@@ -1,13 +1,11 @@
 package scp002.mod.dropoff.gui;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainerCreative;
-import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import scp002.mod.dropoff.config.DropOffConfig;
-import scp002.mod.dropoff.message.MainMessage;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import scp002.mod.dropoff.util.ClientUtils;
 
 public class GuiScreenEventHandler {
@@ -16,16 +14,15 @@ public class GuiScreenEventHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onActionPreformed(GuiScreenEvent.ActionPerformedEvent.Pre event) {
-        if (!DropOffConfig.INSTANCE.overrideQuarkButton ||
-                !(event.getGui() instanceof GuiInventory || event.getGui() instanceof GuiContainerCreative) ||
+        if (!(event.getGui() instanceof InventoryScreen || event.getGui() instanceof CreativeScreen) ||
                 !event.getButton().getClass().getName().equals("vazkii.quark.management.client.gui.GuiButtonChest") ||
-                !GuiScreen.isShiftKeyDown()) {
+                !Screen.hasShiftDown()) {
             return;
         }
 
         event.setCanceled(true);
 
-        ClientUtils.sendNoSpectator(MainMessage.INSTANCE);
+        ClientUtils.sendNoSpectator();
     }
 
 }

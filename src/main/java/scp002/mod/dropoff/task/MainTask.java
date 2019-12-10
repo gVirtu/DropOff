@@ -1,8 +1,8 @@
 package scp002.mod.dropoff.task;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.tileentity.FurnaceTileEntity;
 import scp002.mod.dropoff.config.DropOffConfig;
 import scp002.mod.dropoff.inventory.DropOffHandler;
 import scp002.mod.dropoff.inventory.InventoryData;
@@ -14,20 +14,20 @@ import java.util.List;
 
 public class MainTask implements Runnable {
 
-    private final EntityPlayerMP player;
+    private final ServerPlayerEntity player;
     private final InventoryManager inventoryManager;
     private final DropOffHandler dropOffHandler;
     private final SortingHandler sortingHandler;
     private List<InventoryData> inventoryDataList = new ArrayList<>();
 
-    public MainTask(EntityPlayerMP player) {
+    public MainTask(ServerPlayerEntity player) {
         this.player = player;
         inventoryManager = new InventoryManager(player);
         dropOffHandler = new DropOffHandler(inventoryManager);
         sortingHandler = new SortingHandler(inventoryManager);
     }
 
-    public EntityPlayerMP getPlayer() {
+    public ServerPlayerEntity getPlayer() {
         return player;
     }
 
@@ -48,11 +48,11 @@ public class MainTask implements Runnable {
         for (InventoryData inventoryData : inventoryDataList) {
             IInventory inventory = inventoryData.getInventory();
 
-            if (DropOffConfig.INSTANCE.dropOff) {
+            if (DropOffConfig.dropOff.get()) {
                 dropOffHandler.setStartSlot(InventoryManager.Slots.FIRST);
                 dropOffHandler.setEndSlot(InventoryManager.Slots.LAST);
 
-                if (inventory instanceof TileEntityFurnace) {
+                if (inventory instanceof FurnaceTileEntity) {
                     if (inventory.getStackInSlot(InventoryManager.Slots.FIRST).isEmpty()) {
                         dropOffHandler.setStartSlot(InventoryManager.Slots.FURNACE_FUEL);
                     }
@@ -63,7 +63,7 @@ public class MainTask implements Runnable {
                 dropOffHandler.dropOff(inventoryData);
             }
 
-            if (DropOffConfig.INSTANCE.sortContainers) {
+            if (DropOffConfig.sortContainers.get()) {
                 if (sortingHandler.isSortRequired(inventoryData.getInventory())) {
                     sortingHandler.setStartSlot(InventoryManager.Slots.FIRST);
                     sortingHandler.setEndSlot(InventoryManager.Slots.LAST);
@@ -77,7 +77,7 @@ public class MainTask implements Runnable {
 
         this.inventoryDataList = inventoryDataList;
 
-        if (DropOffConfig.INSTANCE.sortPlayerInventory) {
+        if (DropOffConfig.sortPlayerInventory.get()) {
             sortingHandler.setStartSlot(InventoryManager.Slots.PLAYER_INVENTORY_FIRST);
             sortingHandler.setEndSlot(InventoryManager.Slots.PLAYER_INVENTORY_LAST);
 
@@ -86,7 +86,7 @@ public class MainTask implements Runnable {
 
         player.inventory.markDirty();
 
-        player.inventoryContainer.detectAndSendChanges();
+        player.container.detectAndSendChanges();
     }
 
 }

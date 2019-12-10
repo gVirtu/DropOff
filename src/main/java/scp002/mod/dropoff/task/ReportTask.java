@@ -1,6 +1,6 @@
 package scp002.mod.dropoff.task;
 
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
 import scp002.mod.dropoff.config.DropOffConfig;
 import scp002.mod.dropoff.render.RendererCube;
@@ -26,11 +26,11 @@ public class ReportTask implements Runnable {
 
     @Override
     public void run() {
-        if (DropOffConfig.INSTANCE.highlightContainers) {
+        if (DropOffConfig.Client.highlightContainers.get()) {
             RendererCube.INSTANCE.draw(rendererCubeTargets);
         }
 
-        if (DropOffConfig.INSTANCE.displayMessage) {
+        if (DropOffConfig.Client.displayMessage.get()) {
             String message = String.valueOf(TextFormatting.RED) +
                     itemsCounter +
                     TextFormatting.RESET +

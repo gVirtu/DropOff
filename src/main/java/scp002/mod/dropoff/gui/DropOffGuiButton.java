@@ -1,24 +1,47 @@
 package scp002.mod.dropoff.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class DropOffGuiButton extends GuiButtonExt {
 
-    final List<String> hoverText = new ArrayList<>();
+  public boolean dump;
+  final List<String> hoverText = new ArrayList<>();
 
-    DropOffGuiButton(IPressable callback) {
-        super(0, 0, 0, 10, "^",callback);
+  DropOffGuiButton(int xPos, int yPos, IPressable callback, boolean b) {
+    super(xPos, yPos, 10, 15, "^",callback);
+    this.dump = b;
+    if (dump)
+    hoverText.add("Dump to Nearby Chests");
+    else
+    hoverText.add("Quick Stack to Nearby Chests");
+  }
 
-        hoverText.add("DropOff items from the player");
-        hoverText.add("inventory to the nearby containers.");
+  @Override
+  public void playDownSound(SoundHandler p_playDownSound_1_) {
+  }
+
+  @Override
+  public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+    super.render(p_render_1_, p_render_2_, p_render_3_);
+    renderToolTip(p_render_1_,p_render_2_);
+  }
+
+  @Override
+  public void renderToolTip(int p_renderToolTip_1_, int p_renderToolTip_2_) {
+    if (isHovered){
+      GlStateManager.enableDepthTest();
+      Minecraft mc = Minecraft.getInstance();
+      int guiwidth = mc.currentScreen.width;
+      int guiheight = mc.currentScreen.height;
+      GuiUtils.drawHoveringText(hoverText,p_renderToolTip_1_+ 10,p_renderToolTip_2_ -10,guiwidth,guiheight,100,mc.fontRenderer);
+      GlStateManager.disableDepthTest();
     }
-
-    @Override
-    public void playDownSound(SoundHandler p_playDownSound_1_) {
-
-    }
+  }
 }

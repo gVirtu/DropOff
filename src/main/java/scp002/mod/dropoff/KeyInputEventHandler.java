@@ -8,21 +8,22 @@ import scp002.mod.dropoff.util.ClientUtils;
 
 public class KeyInputEventHandler {
 
-    static final KeyInputEventHandler INSTANCE = new KeyInputEventHandler();
+  static final KeyInputEventHandler INSTANCE = new KeyInputEventHandler();
 
-    final KeyBinding mainTaskKeyBinding;
+  final KeyBinding dump;
+  final KeyBinding deposit;
 
-    private KeyInputEventHandler() {
-        mainTaskKeyBinding = new KeyBinding(DropOff.MOD_NAME, GLFW.GLFW_KEY_X, DropOff.MOD_NAME);
+  private KeyInputEventHandler() {
+    dump = new KeyBinding(DropOff.MOD_NAME, GLFW.GLFW_KEY_X, DropOff.MOD_NAME);
+    deposit = new KeyBinding(DropOff.MOD_NAME, GLFW.GLFW_KEY_C, DropOff.MOD_NAME);
+  }
+
+  @SubscribeEvent
+  public void onKeyInput(InputEvent.KeyInputEvent event) {
+    if (dump.isPressed()) {
+      ClientUtils.sendNoSpectator(true);
+    } else if (deposit.isPressed()) {
+      ClientUtils.sendNoSpectator(false);
     }
-
-    @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (!mainTaskKeyBinding.isPressed()) {
-            return;
-        }
-
-        ClientUtils.sendNoSpectator();
-    }
-
+  }
 }

@@ -56,5 +56,6 @@ public class S2CPacketReportPacket {
                     totalContainers, rendererCubeTargets);
 
             reportTask.run();
+            ctx.get().setPacketHandled(true);
         }
     }

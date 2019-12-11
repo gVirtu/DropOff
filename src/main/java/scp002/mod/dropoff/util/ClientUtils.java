@@ -29,11 +29,11 @@ public class ClientUtils {
         soundHandler.play(record);
     }
 
-    public static void sendNoSpectator() {
+    public static void sendNoSpectator(boolean dump) {
         if (Minecraft.getInstance().player.isSpectator()) {
-            printToChat("Action do not allowed in spectator mode.");
+            printToChat("Action not allowed in spectator mode.");
         } else {
-            PacketHandler.INSTANCE.sendToServer(new C2SPacketRequestDropoff());
+            PacketHandler.INSTANCE.sendToServer(new C2SPacketRequestDropoff(dump));
         }
     }
 

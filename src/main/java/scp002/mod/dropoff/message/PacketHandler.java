@@ -14,8 +14,8 @@ public class PacketHandler {
     INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DropOff.MOD_ID, channelName), () -> "1.0", s -> true, s -> true);
 
     INSTANCE.registerMessage(id++, C2SPacketRequestDropoff.class,
-            (a,b) -> {},
-            (t) -> new C2SPacketRequestDropoff(),
+            C2SPacketRequestDropoff::encode,
+            C2SPacketRequestDropoff::new,
             C2SPacketRequestDropoff::handle);
 
     INSTANCE.registerMessage(id++, S2CPacketReportPacket.class,

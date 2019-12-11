@@ -22,5 +22,10 @@ public class PacketHandler {
             S2CPacketReportPacket::encode,
             S2CPacketReportPacket::new,
             S2CPacketReportPacket::handle);
+
+    INSTANCE.registerMessage(id++, C2SFavoriteItemPacket.class,
+            C2SFavoriteItemPacket::encode,
+            C2SFavoriteItemPacket::new,
+            C2SFavoriteItemPacket::handle);
   }
 }

@@ -14,6 +14,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import scp002.mod.dropoff.config.DropOffConfig;
 import scp002.mod.dropoff.inventory.InventoryData;
 import scp002.mod.dropoff.render.RendererCubeTarget;
+import scp002.mod.dropoff.util.Utils;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -86,11 +87,12 @@ public class C2SPacketRequestDropoff {
 
     IItemHandler playerstacks = new InvWrapper(player.inventory);
     for (int i = 0; i < playerstacks.getSlots(); ++i) {
-      ItemStack playerstack = playerstacks.extractItem(i,Integer.MAX_VALUE,false);
-      if (playerstack.isEmpty())continue;
+      ItemStack playerstack = playerstacks.getStackInSlot(i);
+
+      if (playerstack.isEmpty() || Utils.isFavorited(playerstack))continue;
       data.setSuccessful();
       itemsCounter += playerstack.getCount();
-      ItemStack rem = playerstack.copy();
+      ItemStack rem = playerstacks.extractItem(i,Integer.MAX_VALUE,false);
       for (int j = 0; j < target.getSlots(); ++j) {
         rem = target.insertItem(j,rem,false);
         if (rem.isEmpty()) break;
@@ -107,7 +109,7 @@ public class C2SPacketRequestDropoff {
     IItemHandler playerstacks = new InvWrapper(player.inventory);
     for (int i = 0; i < playerstacks.getSlots(); ++i) {
       ItemStack playerstack = playerstacks.getStackInSlot(i);
-      if (playerstack.isEmpty())continue;
+      if (playerstack.isEmpty() || Utils.isFavorited(playerstack))continue;
       boolean hasExistingStack = IntStream.range(0, target.getSlots()).mapToObj(target::getStackInSlot).filter(existing -> !existing.isEmpty()).anyMatch(existing -> existing.getItem() == playerstack.getItem());
       if (!hasExistingStack)continue;
       data.setSuccessful();

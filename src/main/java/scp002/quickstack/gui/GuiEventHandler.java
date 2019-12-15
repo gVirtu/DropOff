@@ -76,7 +76,7 @@ public class GuiEventHandler {
 
   @SubscribeEvent(priority = EventPriority.HIGH)
   @SuppressWarnings("unchecked")
-  public <T extends Container> void onActionPreformed(GuiContainerEvent.DrawBackground event) {
+  public <T extends Container> void drawFavorites(GuiContainerEvent.DrawBackground event) {
     ContainerScreen<T> containerScreen = event.getGuiContainer();
     if (!(containerScreen instanceof InventoryScreen))return;
     PlayerContainer playerContainer = (PlayerContainer)containerScreen.getContainer();

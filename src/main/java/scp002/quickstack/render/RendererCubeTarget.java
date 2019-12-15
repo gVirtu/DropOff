@@ -31,7 +31,7 @@ public class RendererCubeTarget {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) {
+        if (super.equals(o)) {
             return true;
         }
 

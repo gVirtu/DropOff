@@ -1,10 +1,13 @@
 package scp002.quickstack.config;
 
+import com.google.common.collect.Lists;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import scp002.quickstack.DropOff;
+
+import java.util.List;
 
 public class DropOffConfig {
 
@@ -12,11 +15,6 @@ public class DropOffConfig {
 
 
   public static ForgeConfigSpec.BooleanValue dropOff;
-  public static ForgeConfigSpec.BooleanValue dropOffOnlyFullStacks;
-
-  public static ForgeConfigSpec.BooleanValue sortPlayerInventory;
-
-
   public static ForgeConfigSpec.IntValue scanRadius;
 
   public static ForgeConfigSpec.ConfigValue<String> excludeItemsWithNames;
@@ -37,44 +35,29 @@ public class DropOffConfig {
   }
 
   public DropOffConfig(ForgeConfigSpec.Builder builder) {
-
-    // propertyOrder.clear();
-    // categoryToPropertyKeySet.clear()
-
-    // ---------------------------------------------------General---------------------------------------------------
-
-    // Booleans
-
     builder.push(categoryGeneral);
-
-    dropOff = builder.comment("Move items from the player inventory to the nearby containers.").define("DropOff", DefaultValues.dropOff);
-
-    dropOffOnlyFullStacks = builder.comment("Move only full item stacks from the player inventory.").define("DropOff only full stacks", DefaultValues.dropOffOnlyFullStacks);
 
     scanRadius = builder.comment("Radius in blocks to check containers around the player.").
             defineInRange("Scan radius", DefaultValues.scanRadius,0,Integer.MAX_VALUE);
 
-
     builder.pop();
-
-    // -------------------------------------------------Containers--------------------------------------------------
-
   }
 
-  private abstract class DefaultValues {
+  private static class DefaultValues {
 
+    private static final boolean ignoreHotbar = true;
     private static final boolean displayMessage = true;
-    private static final boolean dropOff = true;
-    private static final boolean dropOffOnlyFullStacks = false;
     private static final boolean highlightContainers = true;
     private static final boolean showInventoryButton = true;
 
+    private static final int minSlots = 6;
     private static final int creativeInventoryButtonXOffset = 71;
     private static final int creativeInventoryButtonYOffset = -63;
     private static final int highlightDelay = 3000;
     private static final int scanRadius = 6;
     private static final int survivalInventoryButtonXOffset = 50;
     private static final int survivalInventoryButtonYOffset = -18;
+    private static final List<String> blacklist = Lists.newArrayList("minecraft:furnace","minecraft:blast_furnace","minecraft:smoker");
   }
 
   public static class Client {
@@ -82,37 +65,48 @@ public class DropOffConfig {
     public static ForgeConfigSpec.BooleanValue highlightContainers;
     public static ForgeConfigSpec.BooleanValue showInventoryButton;
     public static ForgeConfigSpec.BooleanValue displayMessage;
+    public static ForgeConfigSpec.BooleanValue ignoreHotBar;
 
     public static ForgeConfigSpec.IntValue creativeInventoryButtonXOffset;
     public static ForgeConfigSpec.IntValue creativeInventoryButtonYOffset;
+    public static ForgeConfigSpec.IntValue minSlotCount;
 
     public static ForgeConfigSpec.IntValue survivalInventoryButtonXOffset;
     public static ForgeConfigSpec.IntValue survivalInventoryButtonYOffset;
 
     public static ForgeConfigSpec.IntValue highlightDelay;
 
+    public static ForgeConfigSpec.ConfigValue<List<String>> blacklistedTes;
+
+
 
     public Client(ForgeConfigSpec.Builder builder){
       builder.push("general");
       //booleans
-      highlightContainers = builder.comment("[Client-side] Highlight nearby containers.").define("Highlight containers",DefaultValues.highlightContainers);
-      displayMessage = builder.comment("[Client-side] Print information to the chat when task is complete.").define("Display Message", DefaultValues.displayMessage);
-      showInventoryButton = builder.comment("[Client-side] Show button in the player inventory.").define("Show inventory button", DefaultValues.showInventoryButton);
+      ignoreHotBar = builder.comment("Ignore hotbar when transferring.").define("Ignore Hotbar",DefaultValues.ignoreHotbar);
+      highlightContainers = builder.comment("Highlight nearby containers.").define("Highlight containers",DefaultValues.highlightContainers);
+      displayMessage = builder.comment(" information to the chat when task is complete.").define("Display Message", DefaultValues.displayMessage);
+      showInventoryButton = builder.comment("Show button in the player inventory.").define("Show inventory button", DefaultValues.showInventoryButton);
 
       // Integers
-      creativeInventoryButtonXOffset = builder.comment("[Client-side] Creative inventory button position width offset.").defineInRange("Creative inventory button X offset",
+      creativeInventoryButtonXOffset = builder.comment("Creative inventory button position width offset.").defineInRange("Creative inventory button X offset",
               DefaultValues.creativeInventoryButtonXOffset,Integer.MIN_VALUE,Integer.MAX_VALUE);
 
-      creativeInventoryButtonYOffset = builder.comment("[Client-side] Creative inventory button position height offset.").defineInRange("Creative inventory button Y offset",
+      creativeInventoryButtonYOffset = builder.comment("Creative inventory button position height offset.").defineInRange("Creative inventory button Y offset",
               DefaultValues.creativeInventoryButtonYOffset,Integer.MIN_VALUE,Integer.MAX_VALUE);
 
-      highlightDelay = builder.comment("[Client-side] Blocks highlighting delay in milliseconds. Delay < 0 means forever.").defineInRange("Highlight delay", DefaultValues.highlightDelay,-1,Integer.MAX_VALUE);
+      highlightDelay = builder.comment("Blocks highlighting delay in milliseconds. Delay < 0 means forever.").defineInRange("Highlight delay", DefaultValues.highlightDelay,-1,Integer.MAX_VALUE);
+      minSlotCount = builder.comment("Min number of slots that a " +
+              "container can be eligible for transfer to, this will exclude furnaces and most machines with a low slot count.").defineInRange("Minimum Slots", DefaultValues.minSlots,0,Integer.MAX_VALUE);
 
-      survivalInventoryButtonXOffset = builder.comment("[Client-side] Survival inventory button position width offset.").defineInRange("Survival inventory button X offset",
+
+      survivalInventoryButtonXOffset = builder.comment("Survival inventory button position width offset.").defineInRange("Survival inventory button X offset",
               DefaultValues.survivalInventoryButtonXOffset,Integer.MIN_VALUE,Integer.MAX_VALUE);
 
-      survivalInventoryButtonYOffset = builder.comment("[Client-side] Survival inventory button position height offset.").defineInRange("Survival inventory button Y offset",
+      survivalInventoryButtonYOffset = builder.comment("Survival inventory button position height offset.").defineInRange("Survival inventory button Y offset",
               DefaultValues.survivalInventoryButtonYOffset,Integer.MIN_VALUE,Integer.MAX_VALUE);
+
+      blacklistedTes = builder.define("Blacklisted Block Entities",DefaultValues.blacklist);
     }
   }
 

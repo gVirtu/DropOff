@@ -3,7 +3,7 @@ package scp002.quickstack.task;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
 import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.render.RendererCube;
+import scp002.quickstack.render.RenderWorldLastEventHandler;
 import scp002.quickstack.render.RendererCubeTarget;
 import scp002.quickstack.util.ClientUtils;
 
@@ -27,7 +27,7 @@ public class ReportTask implements Runnable {
     @Override
     public void run() {
         if (DropOffConfig.Client.highlightContainers.get()) {
-            RendererCube.INSTANCE.draw(rendererCubeTargets);
+            RenderWorldLastEventHandler.RendererCube.INSTANCE.draw(rendererCubeTargets);
         }
 
         if (DropOffConfig.Client.displayMessage.get()) {

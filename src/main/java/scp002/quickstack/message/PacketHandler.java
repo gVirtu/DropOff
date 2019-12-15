@@ -18,10 +18,10 @@ public class PacketHandler {
             C2SPacketRequestDropoff::new,
             C2SPacketRequestDropoff::handle);
 
-    INSTANCE.registerMessage(id++, S2CPacketReportPacket.class,
-            S2CPacketReportPacket::encode,
-            S2CPacketReportPacket::new,
-            S2CPacketReportPacket::handle);
+    INSTANCE.registerMessage(id++, S2CReportPacket.class,
+            S2CReportPacket::encode,
+            S2CReportPacket::new,
+            S2CReportPacket::handle);
 
     INSTANCE.registerMessage(id, C2SFavoriteItemPacket.class,
             C2SFavoriteItemPacket::encode,

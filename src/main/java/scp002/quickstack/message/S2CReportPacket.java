@@ -4,13 +4,13 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import scp002.quickstack.render.RendererCubeTarget;
 import scp002.quickstack.task.ReportTask;
-import scp002.quickstack.util.ByteBufUtilsExt;
+import scp002.quickstack.util.PacketBufferExt;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class S2CPacketReportPacket {
+public class S2CReportPacket {
 
     private int itemsCounter;
     private int affectedContainers;
@@ -21,21 +21,21 @@ public class S2CPacketReportPacket {
      * Leave public default constructor for Netty.
      */
     @SuppressWarnings("unused")
-    public S2CPacketReportPacket() {
+    public S2CReportPacket() {
         //
     }
 
-    public S2CPacketReportPacket(PacketBuffer buf){
+    public S2CReportPacket(PacketBuffer buf){
         itemsCounter = buf.readInt();
         affectedContainers = buf.readInt();
         totalContainers = buf.readInt();
 
-        ByteBufUtilsExt byteBufUtilsExt = new ByteBufUtilsExt(buf);
-        rendererCubeTargets = byteBufUtilsExt.readRendererCubeTargets();
+        PacketBufferExt packetBufferExt = new PacketBufferExt(buf);
+        rendererCubeTargets = packetBufferExt.readRendererCubeTargets();
     }
 
-    S2CPacketReportPacket(int itemsCounter, int affectedContainers, int totalContainers,
-                          List<RendererCubeTarget> rendererCubeTargets) {
+    S2CReportPacket(int itemsCounter, int affectedContainers, int totalContainers,
+                    List<RendererCubeTarget> rendererCubeTargets) {
         this.itemsCounter = itemsCounter;
         this.affectedContainers = affectedContainers;
         this.totalContainers = totalContainers;
@@ -47,8 +47,8 @@ public class S2CPacketReportPacket {
         buf.writeInt(affectedContainers);
         buf.writeInt(totalContainers);
 
-        ByteBufUtilsExt byteBufUtilsExt = new ByteBufUtilsExt(buf);
-        byteBufUtilsExt.writeRendererCubeTargets(rendererCubeTargets);
+        PacketBufferExt packetBufferExt = new PacketBufferExt(buf);
+        packetBufferExt.writeRendererCubeTargets(rendererCubeTargets);
     }
 
         public void handle(Supplier<NetworkEvent.Context> ctx) {

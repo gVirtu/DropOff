@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -16,12 +17,10 @@ import scp002.quickstack.inventory.InventoryData;
 import scp002.quickstack.render.RendererCubeTarget;
 import scp002.quickstack.util.Utils;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class C2SPacketRequestDropoff {
@@ -65,13 +64,13 @@ public class C2SPacketRequestDropoff {
     player.container.detectAndSendChanges();
 
     for (InventoryData inventoryData : nearbyInventories) {
-      Color color;
+      int color;
 
       if (inventoryData.success) {
         ++affectedContainers;
-        color = new Color(0, 255, 0);
+        color = 0x00FF00;
       } else {
-        color = new Color(255, 0, 0);
+        color = 0xFF0000;
       }
 
       RendererCubeTarget rendererCubeTarget = new RendererCubeTarget(inventoryData.pos, color);
@@ -136,13 +135,16 @@ public class C2SPacketRequestDropoff {
     int minZ = (int) (player.posZ - DropOffConfig.scanRadius.get());
     int maxZ = (int) (player.posZ + DropOffConfig.scanRadius.get());
 
-    final Set<InventoryData> locations = new HashSet<>();
-    BlockPos.getAllInBox(minX,minY,minZ,maxX,maxY,maxZ).forEach(pos ->
-    {
-      TileEntity currentEntity = player.world.getTileEntity(pos);
-      if (currentEntity != null && currentEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent())locations.add(new InventoryData(pos.toImmutable()));
-    });
-    return locations;
+    World world = player.world;
+
+    return BlockPos
+            .getAllInBox(minX,minY,minZ,maxX,maxY,maxZ)
+            .map(world::getTileEntity)
+            .filter(Objects::nonNull)
+            .filter(tileEntity -> tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent())
+            .map(TileEntity::getPos)
+            .map(InventoryData::new)
+            .collect(Collectors.toSet());
   }
 }
 

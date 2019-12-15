@@ -8,9 +8,9 @@ import java.util.Objects;
 public class RendererCubeTarget {
 
     private final BlockPos blockPos;
-    private final Color color;
+    private final int color;
 
-    public RendererCubeTarget(BlockPos blockPos, Color color) {
+    public RendererCubeTarget(BlockPos blockPos, int color) {
         this.blockPos = blockPos;
         this.color = color;
     }
@@ -19,14 +19,14 @@ public class RendererCubeTarget {
         return blockPos;
     }
 
-    public Color getColor() {
+    public int getColor() {
         return color;
     }
 
     @Override
     public String toString() {
         return "BlockPos: [" + blockPos.toString() + "] " +
-                "Color: [" + color.toString() + "]";
+                "Color: [" + color + "]";
     }
 
     @Override

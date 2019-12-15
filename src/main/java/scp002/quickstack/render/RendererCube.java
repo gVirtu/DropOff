@@ -39,7 +39,7 @@ public class RendererCube {
         }
     }
 
-    private void prepareToRender(RenderWorldLastEvent event, Color color) {
+    private void prepareToRender(RenderWorldLastEvent event, int color) {
         ClientPlayerEntity player = Minecraft.getInstance().player;
 
         double playerX = player.prevPosX + (player.posX - player.prevPosX) * event.getPartialTicks() - 0.5;
@@ -52,7 +52,7 @@ public class RendererCube {
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glLineWidth(1.0f);
-        GL11.glColor3ub((byte) color.getRed(), (byte) color.getGreen(), (byte) color.getBlue());
+        GL11.glColor3ub((byte)(color >> 16 & 0xFF), (byte)(color >> 8 & 0xFF),(byte)(color & 0xFF));
         GL11.glPushMatrix();
         GL11.glTranslated(-playerX, -playerY - player.getEyeHeight(), -playerZ);
     }

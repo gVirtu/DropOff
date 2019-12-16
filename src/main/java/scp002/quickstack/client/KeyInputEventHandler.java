@@ -1,17 +1,17 @@
-package scp002.quickstack;
+package scp002.quickstack.client;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
-import scp002.quickstack.util.ClientUtils;
+import scp002.quickstack.DropOff;
 
 public class KeyInputEventHandler {
 
   static final KeyInputEventHandler INSTANCE = new KeyInputEventHandler();
 
-  final KeyBinding dump;
-  final KeyBinding deposit;
+  static KeyBinding dump;
+  static KeyBinding deposit;
 
   private KeyInputEventHandler() {
     dump = new KeyBinding(DropOff.MOD_NAME, GLFW.GLFW_KEY_X, DropOff.MOD_NAME);

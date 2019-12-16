@@ -2,7 +2,7 @@ package scp002.quickstack.message;
 
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
-import scp002.quickstack.render.RendererCubeTarget;
+import scp002.quickstack.client.RendererCubeTarget;
 import scp002.quickstack.task.ReportTask;
 import scp002.quickstack.util.PacketBufferExt;
 
@@ -12,50 +12,50 @@ import java.util.function.Supplier;
 
 public class S2CReportPacket {
 
-    private int itemsCounter;
-    private int affectedContainers;
-    private int totalContainers;
-    private List<RendererCubeTarget> rendererCubeTargets = new ArrayList<>();
+  private int itemsCounter;
+  private int affectedContainers;
+  private int totalContainers;
+  private List<RendererCubeTarget> rendererCubeTargets = new ArrayList<>();
 
-    /**
-     * Leave public default constructor for Netty.
-     */
-    @SuppressWarnings("unused")
-    public S2CReportPacket() {
-        //
-    }
+  /**
+   * Leave public default constructor for Netty.
+   */
+  @SuppressWarnings("unused")
+  public S2CReportPacket() {
+    //
+  }
 
-    public S2CReportPacket(PacketBuffer buf){
-        itemsCounter = buf.readInt();
-        affectedContainers = buf.readInt();
-        totalContainers = buf.readInt();
+  public S2CReportPacket(PacketBuffer buf){
+    itemsCounter = buf.readInt();
+    affectedContainers = buf.readInt();
+    totalContainers = buf.readInt();
 
-        PacketBufferExt packetBufferExt = new PacketBufferExt(buf);
-        rendererCubeTargets = packetBufferExt.readRendererCubeTargets();
-    }
+    PacketBufferExt packetBufferExt = new PacketBufferExt(buf);
+    rendererCubeTargets = packetBufferExt.readRendererCubeTargets();
+  }
 
-    S2CReportPacket(int itemsCounter, int affectedContainers, int totalContainers,
-                    List<RendererCubeTarget> rendererCubeTargets) {
-        this.itemsCounter = itemsCounter;
-        this.affectedContainers = affectedContainers;
-        this.totalContainers = totalContainers;
-        this.rendererCubeTargets = rendererCubeTargets;
-    }
+  S2CReportPacket(int itemsCounter, int affectedContainers, int totalContainers,
+                  List<RendererCubeTarget> rendererCubeTargets) {
+    this.itemsCounter = itemsCounter;
+    this.affectedContainers = affectedContainers;
+    this.totalContainers = totalContainers;
+    this.rendererCubeTargets = rendererCubeTargets;
+  }
 
-    public void encode(PacketBuffer buf) {
-        buf.writeInt(itemsCounter);
-        buf.writeInt(affectedContainers);
-        buf.writeInt(totalContainers);
+  public void encode(PacketBuffer buf) {
+    buf.writeInt(itemsCounter);
+    buf.writeInt(affectedContainers);
+    buf.writeInt(totalContainers);
 
-        PacketBufferExt packetBufferExt = new PacketBufferExt(buf);
-        packetBufferExt.writeRendererCubeTargets(rendererCubeTargets);
-    }
+    PacketBufferExt packetBufferExt = new PacketBufferExt(buf);
+    packetBufferExt.writeRendererCubeTargets(rendererCubeTargets);
+  }
 
-        public void handle(Supplier<NetworkEvent.Context> ctx) {
-            ReportTask reportTask = new ReportTask(itemsCounter, affectedContainers,
-                    totalContainers, rendererCubeTargets);
+  public void handle(Supplier<NetworkEvent.Context> ctx) {
+    ReportTask reportTask = new ReportTask(itemsCounter, affectedContainers,
+            totalContainers, rendererCubeTargets);
 
-            reportTask.run();
-            ctx.get().setPacketHandled(true);
-        }
-    }
+    reportTask.run();
+    ctx.get().setPacketHandled(true);
+  }
+}

@@ -66,6 +66,7 @@ public class DropOffConfig {
     public static ForgeConfigSpec.BooleanValue showInventoryButton;
     public static ForgeConfigSpec.BooleanValue displayMessage;
     public static ForgeConfigSpec.BooleanValue ignoreHotBar;
+    public static ForgeConfigSpec.BooleanValue enableDump;
 
     public static ForgeConfigSpec.IntValue creativeInventoryButtonXOffset;
     public static ForgeConfigSpec.IntValue creativeInventoryButtonYOffset;
@@ -83,7 +84,8 @@ public class DropOffConfig {
     public Client(ForgeConfigSpec.Builder builder){
       builder.push("general");
       //booleans
-      ignoreHotBar = builder.comment("Ignore hotbar when transferring.").define("Ignore Hotbar",DefaultValues.ignoreHotbar);
+      enableDump = builder.comment("Enable dump button.").define("Enable Dump Button",true);
+      ignoreHotBar = builder.comment("Ignore hotbar when transferring.").define("Ignore Hotbar",true);
       highlightContainers = builder.comment("Highlight nearby containers.").define("Highlight containers",DefaultValues.highlightContainers);
       displayMessage = builder.comment(" information to the chat when task is complete.").define("Display Message", DefaultValues.displayMessage);
       showInventoryButton = builder.comment("Show button in the player inventory.").define("Show inventory button", DefaultValues.showInventoryButton);

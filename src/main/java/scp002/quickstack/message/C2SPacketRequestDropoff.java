@@ -14,8 +14,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.inventory.InventoryData;
-import scp002.quickstack.render.RendererCubeTarget;
+import scp002.quickstack.util.InventoryData;
+import scp002.quickstack.client.RendererCubeTarget;
 import scp002.quickstack.util.PacketBufferExt;
 import scp002.quickstack.util.Utils;
 

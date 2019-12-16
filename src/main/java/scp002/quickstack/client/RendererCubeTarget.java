@@ -1,8 +1,7 @@
-package scp002.quickstack.render;
+package scp002.quickstack.client;
 
 import net.minecraft.util.math.BlockPos;
 
-import java.awt.*;
 import java.util.Objects;
 
 public class RendererCubeTarget {

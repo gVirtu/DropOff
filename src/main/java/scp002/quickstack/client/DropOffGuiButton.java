@@ -1,4 +1,4 @@
-package scp002.quickstack.gui;
+package scp002.quickstack.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;

@@ -1,4 +1,4 @@
-package scp002.quickstack.gui;
+package scp002.quickstack.config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;

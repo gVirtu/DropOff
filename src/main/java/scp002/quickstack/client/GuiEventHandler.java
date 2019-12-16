@@ -1,4 +1,4 @@
-package scp002.quickstack.gui;
+package scp002.quickstack.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
@@ -20,11 +20,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import scp002.quickstack.config.DropOffConfig;
 import scp002.quickstack.message.C2SFavoriteItemPacket;
 import scp002.quickstack.message.PacketHandler;
-import scp002.quickstack.util.ClientUtils;
 import scp002.quickstack.util.Utils;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
 
 import static net.minecraft.client.gui.AbstractGui.fill;
@@ -43,10 +41,11 @@ public class GuiEventHandler {
     int xPos = event.getGui().width / 2 +
             (isCreative ? DropOffConfig.Client.creativeInventoryButtonXOffset.get() : DropOffConfig.Client.survivalInventoryButtonXOffset.get());
     int yPos = event.getGui().height / 2 + (isCreative ? DropOffConfig.Client.creativeInventoryButtonYOffset.get() : DropOffConfig.Client.survivalInventoryButtonYOffset.get());
-
-    Button dump = new DropOffGuiButton(xPos, yPos, this::actionPerformed, true);
+    if (DropOffConfig.Client.enableDump.get()) {
+      Button dump = new DropOffGuiButton(xPos, yPos, this::actionPerformed, true);
+      event.addWidget(dump);
+    }
     Button deposit = new DropOffGuiButton(xPos + 12, yPos, this::actionPerformed, false);
-    event.addWidget(dump);
     event.addWidget(deposit);
   }
 

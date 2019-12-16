@@ -1,4 +1,4 @@
-package scp002.quickstack.inventory;
+package scp002.quickstack.util;
 
 import net.minecraft.util.math.BlockPos;
 

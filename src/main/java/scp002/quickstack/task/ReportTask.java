@@ -3,9 +3,9 @@ package scp002.quickstack.task;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
 import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.render.RenderWorldLastEventHandler;
-import scp002.quickstack.render.RendererCubeTarget;
-import scp002.quickstack.util.ClientUtils;
+import scp002.quickstack.client.RenderWorldLastEventHandler;
+import scp002.quickstack.client.RendererCubeTarget;
+import scp002.quickstack.client.ClientUtils;
 
 import java.util.List;
 

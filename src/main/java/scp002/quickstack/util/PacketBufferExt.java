@@ -3,10 +3,9 @@ package scp002.quickstack.util;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import scp002.quickstack.render.RendererCubeTarget;
+import scp002.quickstack.client.RendererCubeTarget;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,12 +23,7 @@ public class PacketBufferExt extends PacketBuffer {
 
   public <T extends IForgeRegistryEntry<T>> List<T> readRegistryIdArray(){
     int size = readInt();
-    List<T> list = new ArrayList<>();
-    for (int value = 0; value < size; value++) {
-      T t = readRegistryId();
-      list.add(t);
-    }
-    return list;
+    return IntStream.range(0, size).<T>mapToObj(value -> readRegistryId()).collect(Collectors.toList());
   }
 
   public void writeRendererCubeTargets(List<RendererCubeTarget> rendererCubeTargets) {

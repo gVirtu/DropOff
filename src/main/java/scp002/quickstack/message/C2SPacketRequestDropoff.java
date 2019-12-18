@@ -140,14 +140,14 @@ public class C2SPacketRequestDropoff {
   }
 
   public Set<InventoryData> getNearbyInventories(ServerPlayerEntity player) {
-    int minX = (int) (player.posX - DropOffConfig.scanRadius.get());
-    int maxX = (int) (player.posX + DropOffConfig.scanRadius.get());
+    int minX = (int) (player.getPositionVec().x - DropOffConfig.scanRadius.get());
+    int maxX = (int) (player.getPositionVec().x + DropOffConfig.scanRadius.get());
 
-    int minY = (int) (player.posY - DropOffConfig.scanRadius.get());
-    int maxY = (int) (player.posY + DropOffConfig.scanRadius.get());
+    int minY = (int) (player.getPositionVec().y - DropOffConfig.scanRadius.get());
+    int maxY = (int) (player.getPositionVec().y + DropOffConfig.scanRadius.get());
 
-    int minZ = (int) (player.posZ - DropOffConfig.scanRadius.get());
-    int maxZ = (int) (player.posZ + DropOffConfig.scanRadius.get());
+    int minZ = (int) (player.getPositionVec().z - DropOffConfig.scanRadius.get());
+    int maxZ = (int) (player.getPositionVec().z + DropOffConfig.scanRadius.get());
 
     World world = player.world;
 

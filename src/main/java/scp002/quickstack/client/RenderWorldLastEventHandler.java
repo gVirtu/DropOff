@@ -37,7 +37,7 @@ public class RenderWorldLastEventHandler {
               DropOffConfig.Client.highlightDelay.get() >= 0L) {
         return;
       }
-      rendererCubeTargets.forEach(rendererCubeTarget -> ClientUtils.drawBoundingBox(rendererCubeTarget.getBlockPos(), rendererCubeTarget.getColor()));
+      rendererCubeTargets.forEach(rendererCubeTarget -> ClientUtils.drawBoundingBox(event.getContext(),event.getMatrixStack(),rendererCubeTarget.getBlockPos(), rendererCubeTarget.getColor()));
     }
   }
 }

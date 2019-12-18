@@ -1,6 +1,6 @@
 package scp002.quickstack.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -111,7 +111,7 @@ public class GuiEventHandler {
       }
     }
 
-    GlStateManager.color4f(1,1,1,1);
+    RenderSystem.color4f(1,1,1,1);
 
   }
 

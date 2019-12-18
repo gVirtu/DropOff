@@ -1,13 +1,5 @@
 package scp002.quickstack.config;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraftforge.fml.client.IModGuiFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Set;
-
 /*
 public class GuiFactory implements IModGuiFactory {
 

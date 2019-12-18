@@ -1,6 +1,6 @@
 package scp002.quickstack.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
@@ -41,12 +41,12 @@ class DropOffGuiButton extends GuiButtonExt {
   @Override
   public void renderToolTip(int p_renderToolTip_1_, int p_renderToolTip_2_) {
     if (isHovered){
-      GlStateManager.enableDepthTest();
+      RenderSystem.enableDepthTest();
       Minecraft mc = Minecraft.getInstance();
       int guiwidth = mc.currentScreen.width;
       int guiheight = mc.currentScreen.height;
       GuiUtils.drawHoveringText(hoverText,p_renderToolTip_1_+ 10,p_renderToolTip_2_ -10,guiwidth,guiheight,100,mc.fontRenderer);
-      GlStateManager.disableDepthTest();
+      RenderSystem.disableDepthTest();
     }
   }
 }

@@ -3,7 +3,7 @@ package scp002.quickstack.config;
 import com.google.common.collect.Lists;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 import scp002.quickstack.DropOff;
 
@@ -14,10 +14,7 @@ public class DropOffConfig {
   final String categoryGeneral = "general";
 
 
-  public static ForgeConfigSpec.BooleanValue dropOff;
   public static ForgeConfigSpec.IntValue scanRadius;
-
-  public static ForgeConfigSpec.ConfigValue<String> excludeItemsWithNames;
 
   public static final Client CLIENT;
   public static final ForgeConfigSpec CLIENT_SPEC;
@@ -114,17 +111,13 @@ public class DropOffConfig {
 
   public static class ConfigChangeEventHandler {
 
-      public static final ConfigChangeEventHandler INSTANCE = new ConfigChangeEventHandler();
-
       @SubscribeEvent
-      public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-          if (!event.getModID().equals(DropOff.MOD_ID)) {
+      public void onConfigChanged(ModConfig.ModConfigEvent event) {
+          if (!event.getConfig().getModId().equals(DropOff.MOD_ID)) {
               return;
           }
 
           DropOff.LOGGER.info("Configuration changed.");
-          //DropOffConfig.INSTANCE.sync(false);
       }
-
   }
 }

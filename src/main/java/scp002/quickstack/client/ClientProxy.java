@@ -17,14 +17,14 @@ public class ClientProxy {
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {
 
-        KeyInputEventHandler.dump = new KeyBinding(DropOff.MOD_NAME, GLFW.GLFW_KEY_X, DropOff.MOD_NAME);
-        KeyInputEventHandler.deposit = new KeyBinding(DropOff.MOD_NAME, GLFW.GLFW_KEY_C, DropOff.MOD_NAME);
+        KeyInputEventHandler.dump = new KeyBinding(DropOff.MOD_ID, GLFW.GLFW_KEY_X, DropOff.MOD_ID);
+        KeyInputEventHandler.deposit = new KeyBinding(DropOff.MOD_ID, GLFW.GLFW_KEY_C, DropOff.MOD_ID);
         ClientRegistry.registerKeyBinding(KeyInputEventHandler.dump);
         ClientRegistry.registerKeyBinding(KeyInputEventHandler.deposit);
 
         MinecraftForge.EVENT_BUS.register(RenderWorldLastEventHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new GuiEventHandler());
         MinecraftForge.EVENT_BUS.register(KeyInputEventHandler.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(DropOffConfig.ConfigChangeEventHandler.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(new DropOffConfig.ConfigChangeEventHandler());
     }
 }

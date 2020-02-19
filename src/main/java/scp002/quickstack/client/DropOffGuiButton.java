@@ -4,19 +4,20 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.item.ItemGroup;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
-import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class DropOffGuiButton extends GuiButtonExt {
+class DropOffGuiButton extends ExtendedButton {
 
   public boolean dump;
   final List<String> hoverText = new ArrayList<>();
 
-  DropOffGuiButton(int xPos, int yPos, IPressable callback, boolean b) {
+  DropOffGuiButton(int xPos, int yPos, Button.IPressable callback, boolean b) {
     super(xPos, yPos, 10, 15, "^",callback);
     this.dump = b;
     if (dump)

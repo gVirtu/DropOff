@@ -105,8 +105,6 @@ public class ClientUtils {
       int z = pos.getZ();
 
       // TOP
-      // func_225582_a_ = POS
-      // func_227885_a_ = COLOR
       buffer.pos(x, y + size, z).color(red, green, blue, opacity).endVertex();
       buffer.pos(x + size, y + size, z).color(red, green, blue, opacity).endVertex();
       buffer.pos(x + size, y + size, z).color(red, green, blue, opacity).endVertex();

@@ -30,17 +30,22 @@ import static net.minecraft.client.gui.AbstractGui.fill;
 public class GuiEventHandler {
 
   @SubscribeEvent
-  public void onGuiOpen(GuiScreenEvent.InitGuiEvent event) {
+  public void onGuiOpen(GuiScreenEvent.InitGuiEvent.Post event) {
     if (!(event.getGui() instanceof InventoryScreen || event.getGui() instanceof CreativeScreen) ||
             !DropOffConfig.Client.showInventoryButton.get()) {
       return;
     }
 
+    ContainerScreen containerScreen = (ContainerScreen)event.getGui();
+
     boolean isCreative = Minecraft.getInstance().player.abilities.isCreativeMode;
 
-    int xPos = event.getGui().width / 2 +
-            (isCreative ? DropOffConfig.Client.creativeInventoryButtonXOffset.get() : DropOffConfig.Client.survivalInventoryButtonXOffset.get());
-    int yPos = event.getGui().height / 2 + (isCreative ? DropOffConfig.Client.creativeInventoryButtonYOffset.get() : DropOffConfig.Client.survivalInventoryButtonYOffset.get());
+    int xPos = containerScreen.getGuiLeft() + 80 +
+            (isCreative ? DropOffConfig.Client.creativeInventoryButtonXOffset.get() :
+                    DropOffConfig.Client.survivalInventoryButtonXOffset.get());
+    int yPos = containerScreen.getGuiTop() + 80 + (isCreative ?
+            DropOffConfig.Client.creativeInventoryButtonYOffset.get() :
+            DropOffConfig.Client.survivalInventoryButtonYOffset.get());
     if (DropOffConfig.Client.enableDump.get()) {
       Button dump = new DropOffGuiButton(xPos, yPos, this::actionPerformed, true);
       event.addWidget(dump);

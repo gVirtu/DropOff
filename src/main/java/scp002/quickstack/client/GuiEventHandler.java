@@ -82,7 +82,7 @@ public class GuiEventHandler {
 	public <T extends Container> void drawFavorites(GuiContainerEvent.DrawBackground event) {
 		ContainerScreen<T> containerScreen = event.getGuiContainer();
 		if (!canDisplay(containerScreen)) return;
-		PlayerContainer playerContainer = (PlayerContainer) containerScreen.getContainer();
+		T playerContainer = containerScreen.getContainer();
 
 		for (int k = 0; k < 3; ++k) {
 			for (int j = 0; j < 9; ++j) {

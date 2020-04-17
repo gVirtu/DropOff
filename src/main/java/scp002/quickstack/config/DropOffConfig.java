@@ -55,6 +55,9 @@ public class DropOffConfig {
     private static final int survivalInventoryButtonXOffset = 50;
     private static final int survivalInventoryButtonYOffset = -18;
     private static final List<String> blacklist = Lists.newArrayList("minecraft:furnace","minecraft:blast_furnace","minecraft:smoker");
+
+    private static final List<String> container_whitelist = Lists.newArrayList("curios:curios_container");
+
   }
 
   public static class Client {
@@ -75,6 +78,9 @@ public class DropOffConfig {
     public static ForgeConfigSpec.IntValue highlightDelay;
 
     public static ForgeConfigSpec.ConfigValue<List<String>> blacklistedTes;
+
+    public static ForgeConfigSpec.ConfigValue<List<String>> whitelistedContainers;
+
 
 
 
@@ -106,6 +112,9 @@ public class DropOffConfig {
               DefaultValues.survivalInventoryButtonYOffset,Integer.MIN_VALUE,Integer.MAX_VALUE);
 
       blacklistedTes = builder.define("Blacklisted Block Entities",DefaultValues.blacklist);
+
+      whitelistedContainers = builder.define("Whitelisted containers",DefaultValues.container_whitelist);
+
     }
   }
 

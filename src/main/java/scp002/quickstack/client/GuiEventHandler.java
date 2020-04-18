@@ -61,7 +61,7 @@ public class GuiEventHandler {
 	@SubscribeEvent
 	@SuppressWarnings("unchecked")
 	public <T extends Container> void onItemClick(GuiScreenEvent.MouseClickedEvent.Pre event) {
-		if (!canDisplay(event.getGui())) return;
+		if (!canDisplay(event.getGui()) || !(event.getGui() instanceof InventoryScreen) || !Screen.hasControlDown()) return;
 		ContainerScreen<T> containerScreen = (ContainerScreen<T>) event.getGui();
 		double mouseX = event.getMouseX();
 		double mouseY = event.getMouseY();

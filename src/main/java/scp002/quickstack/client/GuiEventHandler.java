@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.client.gui.screen.inventory.HorseInventoryScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.inventory.container.Container;
@@ -124,6 +125,7 @@ public class GuiEventHandler {
 
 	public <T extends Container> boolean canDisplay(ContainerScreen<T> screen) {
 	if (screen instanceof InventoryScreen || screen instanceof CreativeScreen)return true;
+	if (screen instanceof HorseInventoryScreen) return false;
 	return DropOffConfig.Client.whitelistedContainers.get().contains(screen.getContainer().getType().getRegistryName().toString());
 	}
 

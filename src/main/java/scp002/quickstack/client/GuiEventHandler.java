@@ -19,13 +19,16 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import scp002.quickstack.DropOff;
 import scp002.quickstack.config.DropOffConfig;
 import scp002.quickstack.message.C2SFavoriteItemPacket;
 import scp002.quickstack.message.PacketHandler;
 import scp002.quickstack.util.Utils;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static net.minecraft.client.gui.AbstractGui.fill;
 
@@ -123,10 +126,22 @@ public class GuiEventHandler {
 		return screen instanceof ContainerScreen && canDisplay((ContainerScreen) screen);
 	}
 
+	private static final Set<Class<?>> bad_classes = new HashSet<>();
+
 	public <T extends Container> boolean canDisplay(ContainerScreen<T> screen) {
-	if (screen instanceof InventoryScreen || screen instanceof CreativeScreen)return true;
-	if (screen instanceof HorseInventoryScreen) return false;
-	return DropOffConfig.Client.whitelistedContainers.get().contains(screen.getContainer().getType().getRegistryName().toString());
+		if (screen instanceof InventoryScreen || screen instanceof CreativeScreen) return true;
+		if (screen instanceof HorseInventoryScreen) return false;
+		try {
+			return DropOffConfig.Client.whitelistedContainers.get().contains(screen.getContainer().getType().getRegistryName().toString());
+		} catch (Exception e) {
+			Class<?> clazz = screen.getContainer().getClass();
+			if (bad_classes.contains(clazz)) {
+				DropOff.LOGGER.error(clazz + " does not have a container type registered to it! " +
+								"This is a bug in the other mod and should be reported to them.  The buttons will not display in this gui!");
+				bad_classes.add(clazz);
+			}
+			return false;
+		}
 	}
 
 	@SubscribeEvent

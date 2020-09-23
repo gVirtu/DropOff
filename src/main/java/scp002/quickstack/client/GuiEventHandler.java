@@ -1,5 +1,6 @@
 package scp002.quickstack.client;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -87,6 +88,7 @@ public class GuiEventHandler {
 		ContainerScreen<T> containerScreen = event.getGuiContainer();
 		if (!canDisplay(containerScreen)) return;
 		T playerContainer = containerScreen.getContainer();
+		MatrixStack matrices = event.getMatrixStack();
 
 		for (int k = 0; k < 3; ++k) {
 			for (int j = 0; j < 9; ++j) {
@@ -96,7 +98,7 @@ public class GuiEventHandler {
 				if (Utils.isFavorited(stack)) {
 					int xoffset = 8;
 					int yoffset = 84;
-					fill(containerScreen.getGuiLeft() + j * 18 + xoffset,
+					fill(matrices,containerScreen.getGuiLeft() + j * 18 + xoffset,
 									containerScreen.getGuiTop() + k * 18 + yoffset,
 									containerScreen.getGuiLeft() + j * 18 + 16 + xoffset,
 									containerScreen.getGuiTop() + k * 18 + 16 + yoffset,
@@ -111,7 +113,7 @@ public class GuiEventHandler {
 			if (Utils.isFavorited(stack)) {
 				int xoffset = 8;
 				int yoffset = 142;
-				fill(containerScreen.getGuiLeft() + i * 18 + xoffset,
+				fill(matrices,containerScreen.getGuiLeft() + i * 18 + xoffset,
 								containerScreen.getGuiTop() + yoffset,
 								containerScreen.getGuiLeft() + i * 18 + 16 + xoffset,
 								containerScreen.getGuiTop() + 16 + yoffset,

@@ -32,8 +32,16 @@ public class C2SFavoriteItemPacket {
     ServerPlayerEntity player = ctx.get().getSender();
     Slot slot = player.openContainer.getSlot(slotId);
     ItemStack stack = slot.getStack();
-    boolean favorited = stack.getOrCreateTag().getBoolean("favorite");
-    stack.getOrCreateTag().putBoolean("favorite",!favorited);
+    boolean alreadyFavorited = stack.hasTag() && stack.getTag().contains("favorite");
+    if (alreadyFavorited) {
+      //kill empty tags
+      stack.getTag().remove("favorite");
+      if (stack.getTag().isEmpty()) {
+        stack.setTag(null);
+      }
+    } else {
+      stack.getOrCreateTag().putBoolean("favorite",true);
+    }
     ctx.get().setPacketHandled(true);
   }
 }

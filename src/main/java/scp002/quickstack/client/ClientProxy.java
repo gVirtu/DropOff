@@ -24,7 +24,6 @@ public class ClientProxy {
         MinecraftForge.EVENT_BUS.register(RenderWorldLastEventHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new GuiEventHandler());
         MinecraftForge.EVENT_BUS.addListener(ClientProxy::onKeyInput);
-        MinecraftForge.EVENT_BUS.register(new DropOffConfig.ConfigChangeEventHandler());
     }
 
     public static void onKeyInput(InputEvent.KeyInputEvent event) {

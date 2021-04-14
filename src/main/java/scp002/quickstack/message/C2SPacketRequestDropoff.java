@@ -165,7 +165,7 @@ public class C2SPacketRequestDropoff {
             .collect(Collectors.toSet());
   }
 
-  public void encode( PacketBuffer buf) {
+  public void encode(PacketBuffer buf) {
     buf = new PacketBufferExt(buf);
     buf.writeBoolean(ignoreHotbar);
     buf.writeBoolean(dump);

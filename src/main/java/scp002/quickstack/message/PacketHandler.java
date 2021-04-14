@@ -8,10 +8,10 @@ import scp002.quickstack.DropOff;
 public class PacketHandler {
   public static SimpleChannel INSTANCE;
 
-  public static void registerMessages(String channelName) {
+  public static void registerMessages() {
     int id = 0;
 
-    INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DropOff.MOD_ID, channelName), () -> "1.0", s -> true, s -> true);
+    INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(DropOff.MOD_ID, DropOff.MOD_ID), () -> "1.0", s -> true, s -> true);
 
     INSTANCE.registerMessage(id++, C2SPacketRequestDropoff.class,
             C2SPacketRequestDropoff::encode,

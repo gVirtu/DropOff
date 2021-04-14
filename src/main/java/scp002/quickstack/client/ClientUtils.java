@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -20,14 +18,11 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 import scp002.quickstack.config.DropOffConfig;
 import scp002.quickstack.message.C2SPacketRequestDropoff;
 import scp002.quickstack.message.PacketHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ClientUtils {
 
@@ -51,16 +46,8 @@ public class ClientUtils {
     if (Minecraft.getInstance().player.isSpectator()) {
       printToChat("Action not allowed in spectator mode.");
     } else {
-      PacketHandler.INSTANCE.sendToServer(new C2SPacketRequestDropoff(DropOffConfig.Client.ignoreHotBar.get(),dump, nwkvnjk(),DropOffConfig.Client.minSlotCount.get()));
+      PacketHandler.INSTANCE.sendToServer(new C2SPacketRequestDropoff(DropOffConfig.Client.ignoreHotBar.get(),dump, DropOffConfig.blockEntityBlacklist,DropOffConfig.Client.minSlotCount.get()));
     }
-  }
-
-  public static List<TileEntityType<?>> nwkvnjk(){
-    return DropOffConfig.Client.blacklistedTes.get()
-            .stream()
-            .map(ResourceLocation::new)
-            .map(((ForgeRegistry<TileEntityType<?>>) ForgeRegistries.TILE_ENTITIES)::getValue)
-            .collect(Collectors.toList());
   }
 
     private static final int GL_FRONT_AND_BACK = 1032;

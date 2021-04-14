@@ -16,7 +16,7 @@ public class PacketBufferExt extends PacketBuffer {
     super(buf);
   }
 
-  public <T extends IForgeRegistryEntry<T>> void writeRegistryIdArray(@Nonnull List<T> entries){
+  public <T extends IForgeRegistryEntry<T>> void writeRegistryIdArray(@Nonnull List<T> entries) {
     writeInt(entries.size());
     entries.forEach(this::writeRegistryId);
   }

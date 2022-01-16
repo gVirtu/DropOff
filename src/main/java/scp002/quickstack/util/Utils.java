@@ -1,6 +1,6 @@
 package scp002.quickstack.util;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class Utils {
   public static boolean isFavorited(ItemStack stack){

@@ -1,17 +1,17 @@
 package scp002.quickstack.client;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.gui.screen.inventory.CreativeScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.client.gui.GuiUtils;
-import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,38 +19,35 @@ import java.util.List;
 class DropOffGuiButton extends ExtendedButton {
 
   public boolean dump;
-  final List<ITextProperties> hoverText = new ArrayList<>();
+  final List<Component> hoverText = new ArrayList<>();
 
-  DropOffGuiButton(int xPos, int yPos, Button.IPressable callback, boolean b) {
-    super(xPos, yPos, 10, 15, new StringTextComponent("^"),callback);
+  DropOffGuiButton(int xPos, int yPos, Button.OnPress callback, boolean b) {
+    super(xPos, yPos, 10, 15, new TextComponent("^"),callback);
     this.dump = b;
     if (dump)
-    hoverText.add(new TranslationTextComponent("Dump to Nearby Chests"));
+    hoverText.add(new TranslatableComponent("Dump to Nearby Chests"));
     else
-    hoverText.add(new TranslationTextComponent("Quick Stack to Nearby Chests"));
+    hoverText.add(new TranslatableComponent("Quick Stack to Nearby Chests"));
   }
 
   @Override
-  public void playDownSound(SoundHandler p_playDownSound_1_) {
+  public void playDownSound(SoundManager p_playDownSound_1_) {
   }
 
   @Override
-  public void render(MatrixStack matrices,int p_render_1_, int p_render_2_, float p_render_3_) {
+  public void render(PoseStack matrices, int p_render_1_, int p_render_2_, float p_render_3_) {
     Minecraft mc = Minecraft.getInstance();
-    this.visible = !(mc.currentScreen instanceof CreativeScreen) || ((CreativeScreen)Minecraft.getInstance().currentScreen).getSelectedTabIndex() == ItemGroup.INVENTORY.getIndex();
+    this.visible = !(mc.screen instanceof CreativeModeInventoryScreen) || ((CreativeModeInventoryScreen)Minecraft.getInstance().screen).getSelectedTab() == CreativeModeTab.TAB_INVENTORY.getId();
     super.render(matrices,p_render_1_, p_render_2_, p_render_3_);
     if (visible)
     renderToolTip(matrices,p_render_1_,p_render_2_);
   }
 
   @Override
-  public void renderToolTip(MatrixStack stack,int p_renderToolTip_1_, int p_renderToolTip_2_) {
+  public void renderToolTip(@NotNull PoseStack stack, int p_renderToolTip_1_, int p_renderToolTip_2_) {
     if (isHovered){
       RenderSystem.enableDepthTest();
-      Minecraft mc = Minecraft.getInstance();
-      int guiwidth = mc.currentScreen.width;
-      int guiheight = mc.currentScreen.height;
-      GuiUtils.drawHoveringText(stack,hoverText,p_renderToolTip_1_+ 10,p_renderToolTip_2_ -10,guiwidth,guiheight,100,mc.fontRenderer);
+      Minecraft.getInstance().screen.renderComponentTooltip(stack, hoverText, p_renderToolTip_1_, p_renderToolTip_2_);
       RenderSystem.disableDepthTest();
     }
   }

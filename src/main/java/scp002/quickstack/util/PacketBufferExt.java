@@ -1,7 +1,7 @@
 package scp002.quickstack.util;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import scp002.quickstack.client.RendererCubeTarget;
 
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class PacketBufferExt extends PacketBuffer {
+public class PacketBufferExt extends FriendlyByteBuf {
 
-  public PacketBufferExt(PacketBuffer buf) {
+  public PacketBufferExt(FriendlyByteBuf buf) {
     super(buf);
   }
 
@@ -37,12 +37,12 @@ public class PacketBufferExt extends PacketBuffer {
   }
 
   private void writeRendererCubeTarget(RendererCubeTarget rendererCubeTarget) {
-    writeLong(rendererCubeTarget.getBlockPos().toLong());
+    writeLong(rendererCubeTarget.getBlockPos().asLong());
     writeInt(rendererCubeTarget.getColor());
   }
 
   private RendererCubeTarget readRendererCubeTarget() {
-    BlockPos blockPos = BlockPos.fromLong(readLong());
+    BlockPos blockPos = BlockPos.of(readLong());
     int color = readInt();
     return new RendererCubeTarget(blockPos, color);
   }

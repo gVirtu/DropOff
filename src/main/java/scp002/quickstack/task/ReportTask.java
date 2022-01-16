@@ -1,7 +1,7 @@
 package scp002.quickstack.task;
 
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.sounds.SoundEvents;
 import scp002.quickstack.config.DropOffConfig;
 import scp002.quickstack.client.RenderWorldLastEventHandler;
 import scp002.quickstack.client.RendererCubeTarget;
@@ -31,17 +31,17 @@ public class ReportTask implements Runnable {
         }
 
         if (DropOffConfig.Client.displayMessage.get()) {
-            String message = String.valueOf(TextFormatting.RED) +
+            String message = String.valueOf(ChatFormatting.RED) +
                     itemsCounter +
-                    TextFormatting.RESET +
+                    ChatFormatting.RESET +
                     " items moved to " +
-                    TextFormatting.RED +
+                    ChatFormatting.RED +
                     affectedContainers +
-                    TextFormatting.RESET +
+                    ChatFormatting.RESET +
                     " containers of " +
-                    TextFormatting.RED +
+                    ChatFormatting.RED +
                     totalContainers +
-                    TextFormatting.RESET +
+                    ChatFormatting.RESET +
                     " checked in total.";
 
             ClientUtils.printToChat(message);

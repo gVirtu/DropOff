@@ -1,10 +1,10 @@
 package scp002.quickstack.message;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -15,13 +15,13 @@ public class C2SFavoriteItemPacket {
    */
   public C2SFavoriteItemPacket() {}
 
-  public C2SFavoriteItemPacket(PacketBuffer buf){
+  public C2SFavoriteItemPacket(FriendlyByteBuf buf){
     slotId = buf.readInt();
   }
 
   public C2SFavoriteItemPacket(int slotId) {this.slotId = slotId;}
 
-  public void encode(PacketBuffer buf) {
+  public void encode(FriendlyByteBuf buf) {
     buf.writeInt(slotId);
   }
 
@@ -29,9 +29,9 @@ public class C2SFavoriteItemPacket {
   int slotId;
 
   public void handle(Supplier<NetworkEvent.Context> ctx) {
-    ServerPlayerEntity player = ctx.get().getSender();
-    Slot slot = player.openContainer.getSlot(slotId);
-    ItemStack stack = slot.getStack();
+    ServerPlayer player = ctx.get().getSender();
+    Slot slot = player.containerMenu.getSlot(slotId);
+    ItemStack stack = slot.getItem();
     boolean alreadyFavorited = stack.hasTag() && stack.getTag().contains("favorite");
     if (alreadyFavorited) {
       //kill empty tags

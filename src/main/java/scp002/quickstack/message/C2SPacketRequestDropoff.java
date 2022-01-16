@@ -1,18 +1,18 @@
 package scp002.quickstack.message;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent;
 import scp002.quickstack.config.DropOffConfig;
 import scp002.quickstack.util.InventoryData;
 import scp002.quickstack.client.RendererCubeTarget;
@@ -35,7 +35,7 @@ public class C2SPacketRequestDropoff {
   public C2SPacketRequestDropoff() {
   }
 
-  public C2SPacketRequestDropoff(PacketBuffer buf) {
+  public C2SPacketRequestDropoff(FriendlyByteBuf buf) {
     buf = new PacketBufferExt(buf);
     ignoreHotbar = buf.readBoolean();
     dump = buf.readBoolean();
@@ -43,7 +43,7 @@ public class C2SPacketRequestDropoff {
     minSlotCount = buf.readInt();
   }
 
-  public C2SPacketRequestDropoff(boolean ignoreHotbar,boolean dump, List<TileEntityType<?>> teTypes, int minSlotCount) {
+  public C2SPacketRequestDropoff(boolean ignoreHotbar, boolean dump, List<BlockEntityType<?>> teTypes, int minSlotCount) {
     this.ignoreHotbar = ignoreHotbar;
     this.dump = dump;
     this.teTypes = teTypes;
@@ -52,17 +52,17 @@ public class C2SPacketRequestDropoff {
 
   private boolean ignoreHotbar;
   private boolean dump;
-  private List<TileEntityType<?>> teTypes;
+  private List<BlockEntityType<?>> teTypes;
   private int minSlotCount;
 
   private int itemsCounter;
 
   public void handle(Supplier<NetworkEvent.Context> ctx) {
-    ServerPlayerEntity player = ctx.get().getSender();
+    ServerPlayer player = ctx.get().getSender();
     Set<InventoryData> nearbyInventories = getNearbyInventories(player);
 
     nearbyInventories.forEach(data -> {
-      TileEntity blockEntity = player.world.getTileEntity(data.pos);
+      BlockEntity blockEntity = player.level.getBlockEntity(data.pos);
       blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
               target -> {
                 if (dump)
@@ -73,7 +73,7 @@ public class C2SPacketRequestDropoff {
 
     List<RendererCubeTarget> rendererCubeTargets = new ArrayList<>();
     int affectedContainers = 0;
-    player.container.detectAndSendChanges();
+    player.containerMenu.broadcastChanges();
 
     for (InventoryData inventoryData : nearbyInventories) {
       int color;
@@ -90,13 +90,13 @@ public class C2SPacketRequestDropoff {
     }
 
     PacketHandler.INSTANCE.sendTo(new S2CReportPacket(itemsCounter, affectedContainers, nearbyInventories.size(),
-            rendererCubeTargets), player.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+            rendererCubeTargets), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     ctx.get().setPacketHandled(true);
   }
 
-  public void dropOff(PlayerEntity player, IItemHandler target, InventoryData data) {
+  public void dropOff(Player player, IItemHandler target, InventoryData data) {
 
-    IItemHandler playerstacks = new InvWrapper(player.inventory);
+    IItemHandler playerstacks = new InvWrapper(player.getInventory());
     for (int i = 0; i < 36; ++i) {
       if (ignoreHotbar && i < 9)continue;
       ItemStack playerstack = playerstacks.getStackInSlot(i);
@@ -116,9 +116,9 @@ public class C2SPacketRequestDropoff {
     }
   }
 
-  public void dropOffExisting(PlayerEntity player, IItemHandler target, InventoryData data) {
+  public void dropOffExisting(Player player, IItemHandler target, InventoryData data) {
 
-    IItemHandler playerstacks = new InvWrapper(player.inventory);
+    IItemHandler playerstacks = new InvWrapper(player.getInventory());
     for (int i = 0; i < 36; ++i) {
       if (ignoreHotbar && i < 9)continue;
       ItemStack playerstack = playerstacks.getStackInSlot(i);
@@ -139,33 +139,33 @@ public class C2SPacketRequestDropoff {
     }
   }
 
-  public Set<InventoryData> getNearbyInventories(ServerPlayerEntity player) {
-    int minX = (int) (player.getPositionVec().x - DropOffConfig.scanRadius.get());
-    int maxX = (int) (player.getPositionVec().x + DropOffConfig.scanRadius.get());
+  public Set<InventoryData> getNearbyInventories(ServerPlayer player) {
+    int minX = (int) (player.position().x - DropOffConfig.scanRadius.get());
+    int maxX = (int) (player.position().x + DropOffConfig.scanRadius.get());
 
-    int minY = (int) (player.getPositionVec().y - DropOffConfig.scanRadius.get());
-    int maxY = (int) (player.getPositionVec().y + DropOffConfig.scanRadius.get());
+    int minY = (int) (player.position().y - DropOffConfig.scanRadius.get());
+    int maxY = (int) (player.position().y + DropOffConfig.scanRadius.get());
 
-    int minZ = (int) (player.getPositionVec().z - DropOffConfig.scanRadius.get());
-    int maxZ = (int) (player.getPositionVec().z + DropOffConfig.scanRadius.get());
+    int minZ = (int) (player.position().z - DropOffConfig.scanRadius.get());
+    int maxZ = (int) (player.position().z + DropOffConfig.scanRadius.get());
 
-    World world = player.world;
+    Level world = player.level;
 
     return BlockPos
-            .getAllInBox(minX, minY, minZ, maxX, maxY, maxZ)
-            .map(world::getTileEntity)
+            .betweenClosedStream(minX, minY, minZ, maxX, maxY, maxZ)
+            .map(world::getBlockEntity)
             .filter(Objects::nonNull)
             .filter(tileEntity ->
                     tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                             .filter(iItemHandler -> iItemHandler.getSlots() >= minSlotCount)
                             .isPresent())
             .filter(tileEntity -> !teTypes.contains(tileEntity.getType()))
-            .map(TileEntity::getPos)
+            .map(BlockEntity::getBlockPos)
             .map(InventoryData::new)
             .collect(Collectors.toSet());
   }
 
-  public void encode(PacketBuffer buf) {
+  public void encode(FriendlyByteBuf buf) {
     buf = new PacketBufferExt(buf);
     buf.writeBoolean(ignoreHotbar);
     buf.writeBoolean(dump);

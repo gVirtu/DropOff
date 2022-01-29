@@ -1,7 +1,7 @@
 package scp002.quickstack.message;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 import scp002.quickstack.client.RendererCubeTarget;
 import scp002.quickstack.task.ReportTask;
 import scp002.quickstack.util.PacketBufferExt;
@@ -25,7 +25,7 @@ public class S2CReportPacket {
     //
   }
 
-  public S2CReportPacket(PacketBuffer buf){
+  public S2CReportPacket(FriendlyByteBuf buf){
     itemsCounter = buf.readInt();
     affectedContainers = buf.readInt();
     totalContainers = buf.readInt();
@@ -42,7 +42,7 @@ public class S2CReportPacket {
     this.rendererCubeTargets = rendererCubeTargets;
   }
 
-  public void encode(PacketBuffer buf) {
+  public void encode(FriendlyByteBuf buf) {
     buf.writeInt(itemsCounter);
     buf.writeInt(affectedContainers);
     buf.writeInt(totalContainers);

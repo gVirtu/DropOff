@@ -1,6 +1,6 @@
 package scp002.quickstack.client;
 
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import scp002.quickstack.config.DropOffConfig;
 
@@ -12,7 +12,7 @@ public class RenderWorldLastEventHandler {
     public static final RenderWorldLastEventHandler INSTANCE = new RenderWorldLastEventHandler();
 
     @SubscribeEvent
-    public void onRenderWorldLastEvent(RenderWorldLastEvent event) {
+    public void onRenderWorldLastEvent(RenderLevelLastEvent event) {
         RendererCube.INSTANCE.tryToRender(event);
     }
 
@@ -32,7 +32,7 @@ public class RenderWorldLastEventHandler {
      * This method called by RenderWorldLastEvent handler.
      * It does nothing until the draw() method assign the necessary delay to the global field named currentTime.
      */
-    void tryToRender(RenderWorldLastEvent event) {
+    void tryToRender(RenderLevelLastEvent event) {
       if (System.currentTimeMillis() >= currentTime + DropOffConfig.Client.highlightDelay.get() &&
               DropOffConfig.Client.highlightDelay.get() >= 0L) {
         return;

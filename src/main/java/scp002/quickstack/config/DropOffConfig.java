@@ -1,17 +1,16 @@
 package scp002.quickstack.config;
 
 import com.google.common.collect.Lists;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.commons.lang3.tuple.Pair;
 import scp002.quickstack.DropOff;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,9 +121,9 @@ public class DropOffConfig {
         }
     }
 
-    public static List<TileEntityType<?>> blockEntityBlacklist;
+    public static List<BlockEntityType<?>> blockEntityBlacklist;
 
-    public static void onConfigChanged(ModConfig.ModConfigEvent event) {
+    public static void onConfigChanged(ModConfigEvent event) {
         if (!event.getConfig().getModId().equals(DropOff.MOD_ID)) {
             return;
         }
@@ -133,13 +132,13 @@ public class DropOffConfig {
         blockEntityBlacklist = Client.blacklistedTes.get()
                 .stream()
                 .map(ResourceLocation::new).filter(resourceLocation -> {
-                    boolean b = ForgeRegistries.TILE_ENTITIES.containsKey(resourceLocation);
+                    boolean b = ForgeRegistries.BLOCK_ENTITIES.containsKey(resourceLocation);
                     if (!b) {
                         DropOff.LOGGER.warn("Ignoring unknown blockentity: "+resourceLocation);
                     }
                     return b;
                 })
-                .map(((ForgeRegistry<TileEntityType<?>>) ForgeRegistries.TILE_ENTITIES)::getValue)
+                .map(((ForgeRegistry<BlockEntityType<?>>) ForgeRegistries.BLOCK_ENTITIES)::getValue)
                 .collect(Collectors.toList());
 
 

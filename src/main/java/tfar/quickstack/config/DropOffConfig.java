@@ -1,4 +1,4 @@
-package scp002.quickstack.config;
+package tfar.quickstack.config;
 
 import com.google.common.collect.Lists;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +8,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.commons.lang3.tuple.Pair;
-import scp002.quickstack.DropOff;
+import tfar.quickstack.DropOff;
 
 import java.util.List;
 import java.util.stream.Collectors;

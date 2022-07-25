@@ -1,4 +1,4 @@
-package scp002.quickstack.client;
+package tfar.quickstack.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -1,8 +1,8 @@
-package scp002.quickstack.client;
+package tfar.quickstack.client;
 
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import scp002.quickstack.config.DropOffConfig;
+import tfar.quickstack.config.DropOffConfig;
 
 import java.util.ArrayList;
 import java.util.List;

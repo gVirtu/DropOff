@@ -1,4 +1,4 @@
-package scp002.quickstack.message;
+package tfar.quickstack.message;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,10 +1,10 @@
-package scp002.quickstack.message;
+package tfar.quickstack.message;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import scp002.quickstack.client.RendererCubeTarget;
-import scp002.quickstack.task.ReportTask;
-import scp002.quickstack.util.PacketBufferExt;
+import tfar.quickstack.client.RendererCubeTarget;
+import tfar.quickstack.task.ReportTask;
+import tfar.quickstack.util.PacketBufferExt;
 
 import java.util.ArrayList;
 import java.util.List;

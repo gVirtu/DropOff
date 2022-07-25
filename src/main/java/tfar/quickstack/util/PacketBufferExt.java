@@ -1,9 +1,9 @@
-package scp002.quickstack.util;
+package tfar.quickstack.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import scp002.quickstack.client.RendererCubeTarget;
+import tfar.quickstack.client.RendererCubeTarget;
 
 import javax.annotation.Nonnull;
 import java.util.List;

@@ -1,4 +1,4 @@
-package scp002.quickstack.message;
+package tfar.quickstack.message;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,11 +13,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
-import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.util.InventoryData;
-import scp002.quickstack.client.RendererCubeTarget;
-import scp002.quickstack.util.PacketBufferExt;
-import scp002.quickstack.util.Utils;
+import tfar.quickstack.config.DropOffConfig;
+import tfar.quickstack.util.InventoryData;
+import tfar.quickstack.client.RendererCubeTarget;
+import tfar.quickstack.util.PacketBufferExt;
+import tfar.quickstack.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

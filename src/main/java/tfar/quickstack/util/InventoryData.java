@@ -1,4 +1,4 @@
-package scp002.quickstack.util;
+package tfar.quickstack.util;
 
 import net.minecraft.core.BlockPos;
 

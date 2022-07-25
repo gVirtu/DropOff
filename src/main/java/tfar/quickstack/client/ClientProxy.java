@@ -1,4 +1,4 @@
-package scp002.quickstack.client;
+package tfar.quickstack.client;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.ClientRegistry;
@@ -6,7 +6,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
-import scp002.quickstack.DropOff;
+import tfar.quickstack.DropOff;
 
 public class ClientProxy {
 

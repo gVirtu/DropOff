@@ -1,11 +1,11 @@
-package scp002.quickstack.task;
+package tfar.quickstack.task;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvents;
-import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.client.RenderWorldLastEventHandler;
-import scp002.quickstack.client.RendererCubeTarget;
-import scp002.quickstack.client.ClientUtils;
+import tfar.quickstack.config.DropOffConfig;
+import tfar.quickstack.client.RenderWorldLastEventHandler;
+import tfar.quickstack.client.RendererCubeTarget;
+import tfar.quickstack.client.ClientUtils;
 
 import java.util.List;
 

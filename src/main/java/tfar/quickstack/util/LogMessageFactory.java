@@ -1,7 +1,7 @@
-package scp002.quickstack.util;
+package tfar.quickstack.util;
 
 import org.apache.logging.log4j.message.*;
-import scp002.quickstack.DropOff;
+import tfar.quickstack.DropOff;
 
 public class LogMessageFactory implements MessageFactory {
 

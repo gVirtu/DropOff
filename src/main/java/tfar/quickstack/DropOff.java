@@ -1,4 +1,4 @@
-package scp002.quickstack;
+package tfar.quickstack;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -9,15 +9,15 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import scp002.quickstack.client.ClientProxy;
-import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.message.PacketHandler;
-import scp002.quickstack.util.LogMessageFactory;
+import tfar.quickstack.client.ClientProxy;
+import tfar.quickstack.config.DropOffConfig;
+import tfar.quickstack.message.PacketHandler;
+import tfar.quickstack.util.LogMessageFactory;
 
 @Mod(DropOff.MOD_ID)
 public class DropOff {
 
-    public static final String MOD_ID = "dropoff";
+    public static final String MOD_ID = "quickstack";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID, LogMessageFactory.INSTANCE);
 
     public DropOff() {

@@ -1,4 +1,4 @@
-package scp002.quickstack.client;
+package tfar.quickstack.client;
 
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
@@ -14,9 +14,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
-import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.message.C2SPacketRequestDropoff;
-import scp002.quickstack.message.PacketHandler;
+import tfar.quickstack.config.DropOffConfig;
+import tfar.quickstack.message.C2SPacketRequestDropoff;
+import tfar.quickstack.message.PacketHandler;
 
 import java.util.List;
 

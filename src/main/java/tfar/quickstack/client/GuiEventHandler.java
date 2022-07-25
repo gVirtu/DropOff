@@ -1,4 +1,4 @@
-package scp002.quickstack.client;
+package tfar.quickstack.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,11 +15,11 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import scp002.quickstack.DropOff;
-import scp002.quickstack.config.DropOffConfig;
-import scp002.quickstack.message.C2SFavoriteItemPacket;
-import scp002.quickstack.message.PacketHandler;
-import scp002.quickstack.util.Utils;
+import tfar.quickstack.DropOff;
+import tfar.quickstack.config.DropOffConfig;
+import tfar.quickstack.message.C2SFavoriteItemPacket;
+import tfar.quickstack.message.PacketHandler;
+import tfar.quickstack.util.Utils;
 
 import javax.annotation.Nonnull;
 import java.util.HashSet;

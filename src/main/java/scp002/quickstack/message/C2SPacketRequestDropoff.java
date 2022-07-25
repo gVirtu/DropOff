@@ -6,8 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -57,13 +59,15 @@ public class C2SPacketRequestDropoff {
 
   private int itemsCounter;
 
+  public static Direction preferred = Direction.UP;
+
   public void handle(Supplier<NetworkEvent.Context> ctx) {
     ServerPlayerEntity player = ctx.get().getSender();
     Set<InventoryData> nearbyInventories = getNearbyInventories(player);
 
     nearbyInventories.forEach(data -> {
       TileEntity blockEntity = player.world.getTileEntity(data.pos);
-      blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
+      blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,preferred).ifPresent(
               target -> {
                 if (dump)
                   dropOff(player, target, data);
@@ -155,14 +159,17 @@ public class C2SPacketRequestDropoff {
             .getAllInBox(minX, minY, minZ, maxX, maxY, maxZ)
             .map(world::getTileEntity)
             .filter(Objects::nonNull)
-            .filter(tileEntity ->
-                    tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                            .filter(iItemHandler -> iItemHandler.getSlots() >= minSlotCount)
-                            .isPresent())
+            .filter(tileEntity -> checkCap(tileEntity,minSlotCount))
             .filter(tileEntity -> !teTypes.contains(tileEntity.getType()))
             .map(TileEntity::getPos)
             .map(InventoryData::new)
             .collect(Collectors.toSet());
+  }
+
+  public static boolean checkCap(TileEntity be,int minSlotCount) {
+    LazyOptional<IItemHandler> cap = be.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, preferred);
+    return cap.filter(iItemHandler -> iItemHandler.getSlots() >= minSlotCount)
+            .isPresent();
   }
 
   public void encode(PacketBuffer buf) {

@@ -21,33 +21,33 @@ class DropOffGuiButton extends ExtendedButton {
   public boolean dump;
   final List<Component> hoverText = new ArrayList<>();
 
-  DropOffGuiButton(int xPos, int yPos, Button.OnPress callback, boolean b) {
+  DropOffGuiButton(int xPos, int yPos, Button.OnPress callback, boolean dump) {
     super(xPos, yPos, 10, 15, new TextComponent("^"),callback);
-    this.dump = b;
+    this.dump = dump;
     if (dump)
-    hoverText.add(new TranslatableComponent("Dump to Nearby Chests"));
+    hoverText.add(new TranslatableComponent("dropoff.dump_nearby"));
     else
-    hoverText.add(new TranslatableComponent("Quick Stack to Nearby Chests"));
+    hoverText.add(new TranslatableComponent("dropoff.quick_stack"));
   }
 
   @Override
-  public void playDownSound(SoundManager p_playDownSound_1_) {
+  public void playDownSound(SoundManager soundManager) {
   }
 
   @Override
-  public void render(PoseStack matrices, int p_render_1_, int p_render_2_, float p_render_3_) {
+  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
     Minecraft mc = Minecraft.getInstance();
     this.visible = !(mc.screen instanceof CreativeModeInventoryScreen) || ((CreativeModeInventoryScreen)Minecraft.getInstance().screen).getSelectedTab() == CreativeModeTab.TAB_INVENTORY.getId();
-    super.render(matrices,p_render_1_, p_render_2_, p_render_3_);
+    super.render(poseStack,mouseX, mouseY, partialTick);
     if (visible)
-    renderToolTip(matrices,p_render_1_,p_render_2_);
+    renderToolTip(poseStack,mouseX,mouseY);
   }
 
   @Override
-  public void renderToolTip(@NotNull PoseStack stack, int p_renderToolTip_1_, int p_renderToolTip_2_) {
+  public void renderToolTip(@NotNull PoseStack poseStack, int mouseX, int mouseY) {
     if (isHovered){
       RenderSystem.enableDepthTest();
-      Minecraft.getInstance().screen.renderComponentTooltip(stack, hoverText, p_renderToolTip_1_, p_renderToolTip_2_);
+      Minecraft.getInstance().screen.renderComponentTooltip(poseStack, hoverText, mouseX, mouseY);
       RenderSystem.disableDepthTest();
     }
   }

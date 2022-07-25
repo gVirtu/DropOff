@@ -15,8 +15,8 @@ public class ClientProxy {
 
     public static void init(FMLClientSetupEvent event) {
 
-        dump = new KeyMapping("Dump", GLFW.GLFW_KEY_X, DropOff.MOD_ID);
-        deposit = new KeyMapping("Deposit", GLFW.GLFW_KEY_C, DropOff.MOD_ID);
+        dump = new KeyMapping("dropoff.key.dump", GLFW.GLFW_KEY_X, DropOff.MOD_ID);
+        deposit = new KeyMapping("dropoff.key.deposit", GLFW.GLFW_KEY_C, DropOff.MOD_ID);
         ClientRegistry.registerKeyBinding(dump);
         ClientRegistry.registerKeyBinding(deposit);
 

@@ -95,7 +95,6 @@ public class C2SPacketRequestDropoff {
   }
 
   public void dropOff(Player player, IItemHandler target, InventoryData data) {
-
     IItemHandler playerstacks = new InvWrapper(player.getInventory());
     for (int i = 0; i < 36; ++i) {
       if (ignoreHotbar && i < 9)continue;

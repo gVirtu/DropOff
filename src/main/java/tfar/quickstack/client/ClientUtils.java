@@ -19,6 +19,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import tfar.quickstack.config.DropOffConfig;
 import tfar.quickstack.networking.C2SPacketRequestDropoff;
 import tfar.quickstack.networking.PacketHandler;
@@ -55,6 +56,9 @@ public class ClientUtils {
     }
 
     public static void renderBlocks(RenderLevelStageEvent e, List<RendererCubeTarget> rendererCubeTargets) {
+        if (e.getStage() != Stage.AFTER_SOLID_BLOCKS) {
+            return;
+        }
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 
         PoseStack stack = e.getPoseStack();

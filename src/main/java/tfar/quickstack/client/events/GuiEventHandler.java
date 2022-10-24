@@ -85,7 +85,7 @@ public class GuiEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	@SuppressWarnings("unchecked")
-	public static <T extends AbstractContainerMenu> void drawFavorites(ContainerScreenEvent.Render event) {
+	public static <T extends AbstractContainerMenu> void drawFavorites(ContainerScreenEvent.Render.Background event) {
 		AbstractContainerScreen<T> containerScreen = (AbstractContainerScreen<T>) event.getContainerScreen();
 		if (!canDisplay(containerScreen))
 			return;

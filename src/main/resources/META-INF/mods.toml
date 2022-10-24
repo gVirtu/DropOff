@@ -6,18 +6,18 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[40,)" #mandatory (24 is current forge version)
+loaderVersion="[41,)" #mandatory (24 is current forge version)
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="http://my.issue.tracker/" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 license="Unlicense"
-[[mods]] #mandatory
+[[mods]]
 # The modid of the mod
-modId="quickstack" #mandatory
+modId="dropoff" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 version="${file.jarVersion}" #mandatory
  # A display name for the mod
-displayName="QuickStack" #mandatory
+displayName="DropOff" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
 #updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -27,7 +27,7 @@ displayName="QuickStack" #mandatory
 # A text field displayed in the mod UI
 credits="Vazkii, Vorquel, Saeissl, Mysteryem" #optional
 # A text field displayed in the mod UI
-authors="SCP002,Tfarecnim" #optional
+authors="SCP002,Tfarecnim,Quipex" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 

@@ -11,7 +11,7 @@ public class InventoryData {
         this.pos = pos;
     }
 
-    public void setSuccessful(){
-        success=true;
+    public void setSuccessful() {
+        success = true;
     }
 }

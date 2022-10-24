@@ -1,4 +1,4 @@
-package tfar.quickstack.message;
+package tfar.quickstack.networking;
 
 import java.util.List;
 import java.util.stream.Collectors;

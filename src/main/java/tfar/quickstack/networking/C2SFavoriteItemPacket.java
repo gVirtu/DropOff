@@ -1,4 +1,4 @@
-package tfar.quickstack.message;
+package tfar.quickstack.networking;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

@@ -1,4 +1,4 @@
-package tfar.quickstack.message;
+package tfar.quickstack.networking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,46 +58,44 @@ public class C2SPacketRequestDropoff {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            ServerPlayer player = ctx.get().getSender();
-            Set<InventoryData> nearbyInventories = getNearbyInventories(player);
+        ServerPlayer player = ctx.get().getSender();
+        Set<InventoryData> nearbyInventories = getNearbyInventories(player);
 
-            nearbyInventories.forEach(data -> {
-                BlockEntity blockEntity = player.level.getBlockEntity(data.pos);
-                if (blockEntity == null) {
-                    return;
-                }
-                blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(
-                        target -> {
-                            if (dump)
-                                dropOff(player, target, data);
-                            else
-                                dropOffExisting(player, target, data);
-                        });
-            });
+        nearbyInventories.forEach(data -> {
+            BlockEntity blockEntity = player.level.getBlockEntity(data.pos);
+            if (blockEntity == null) {
+                return;
+            }
+            blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(
+                    target -> {
+                        if (dump)
+                            dropOff(player, target, data);
+                        else
+                            dropOffExisting(player, target, data);
+                    });
+        });
 
-            List<RendererCubeTarget> rendererCubeTargets = new ArrayList<>();
-            int affectedContainers = 0;
-            player.containerMenu.broadcastChanges();
+        List<RendererCubeTarget> rendererCubeTargets = new ArrayList<>();
+        int affectedContainers = 0;
+        player.containerMenu.broadcastChanges();
 
-            for (InventoryData inventoryData : nearbyInventories) {
-                int color;
+        for (InventoryData inventoryData : nearbyInventories) {
+            int color;
 
-                if (inventoryData.success) {
-                    affectedContainers++;
-                    color = 0x00FF00;
-                } else {
-                    color = 0xFF0000;
-                }
-
-                RendererCubeTarget rendererCubeTarget = new RendererCubeTarget(inventoryData.pos, color);
-                rendererCubeTargets.add(rendererCubeTarget);
+            if (inventoryData.success) {
+                affectedContainers++;
+                color = 0x00FF00;
+            } else {
+                color = 0xFF0000;
             }
 
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
-                    new S2CReportPacket(itemsCounter, affectedContainers, nearbyInventories.size(),
-                            rendererCubeTargets));
-        });
+            RendererCubeTarget rendererCubeTarget = new RendererCubeTarget(inventoryData.pos, color);
+            rendererCubeTargets.add(rendererCubeTarget);
+        }
+
+        PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
+                new S2CReportPacket(itemsCounter, affectedContainers, nearbyInventories.size(),
+                        rendererCubeTargets));
         ctx.get().setPacketHandled(true);
     }
 
@@ -176,16 +174,16 @@ public class C2SPacketRequestDropoff {
         DropOff.LOGGER.debug("Is client: {}", world.isClientSide());
 
         DropOff.LOGGER.debug("Scanning x({},{}) y({},{}), z({},{})", minX, maxX, minY, maxY, minZ, maxZ);
-        var blocks = BlockPos.betweenClosedStream(minX, minY, minZ, maxX, maxY, maxZ).toList();
-        DropOff.LOGGER.debug("Found {} blocks", blocks.size());
-
-        var blockEntities = blocks.stream()
+        var blockEntities = BlockPos.betweenClosedStream(minX, minY, minZ, maxX, maxY, maxZ)
                 .map(world::getBlockEntity)
                 .toList();
         DropOff.LOGGER.debug("Found {} block entities", blockEntities.size());
 
-        var hasSlotsItemHandlers = blockEntities.stream()
-                .filter(Objects::nonNull)
+        var nonNulls = blockEntities.stream()
+                .filter(Objects::nonNull).toList();
+        DropOff.LOGGER.debug("Found {} non-nulls", nonNulls.size());
+
+        var hasSlotsItemHandlers = nonNulls.stream()
                 .filter(tileEntity -> tileEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
                         .filter(iItemHandler -> iItemHandler.getSlots() >= minSlotCount)
                         .isPresent())

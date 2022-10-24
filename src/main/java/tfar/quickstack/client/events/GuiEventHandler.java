@@ -35,8 +35,8 @@ import tfar.quickstack.DropOff;
 import tfar.quickstack.client.ClientUtils;
 import tfar.quickstack.client.gui.DropOffGuiButton;
 import tfar.quickstack.config.DropOffConfig;
-import tfar.quickstack.message.C2SFavoriteItemPacket;
-import tfar.quickstack.message.PacketHandler;
+import tfar.quickstack.networking.C2SFavoriteItemPacket;
+import tfar.quickstack.networking.PacketHandler;
 import tfar.quickstack.util.ItemStackUtils;
 
 @Mod.EventBusSubscriber(modid = DropOff.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)

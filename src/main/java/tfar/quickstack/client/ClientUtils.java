@@ -20,8 +20,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import tfar.quickstack.config.DropOffConfig;
-import tfar.quickstack.message.C2SPacketRequestDropoff;
-import tfar.quickstack.message.PacketHandler;
+import tfar.quickstack.networking.C2SPacketRequestDropoff;
+import tfar.quickstack.networking.PacketHandler;
 
 public class ClientUtils {
 

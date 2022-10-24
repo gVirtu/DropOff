@@ -22,7 +22,7 @@ public class DropOffGuiButton extends ExtendedButton {
     final List<Component> hoverText = new ArrayList<>();
 
     public DropOffGuiButton(int xPos, int yPos, Button.OnPress callback, boolean dump) {
-        super(xPos, yPos, 10, 15, Component.literal("V"), callback);
+        super(xPos, yPos, 10, 15, Component.literal("^"), callback);
         this.dump = dump;
         if (dump) {
             hoverText.add(Component.translatable("dropoff.dump_nearby"));

@@ -33,20 +33,22 @@ public class C2SFavoriteItemPacket {
     int slotId;
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ServerPlayer player = ctx.get().getSender();
-        Slot slot = player.containerMenu.getSlot(slotId);
-        ItemStack stack = slot.getItem();
+        ctx.get().enqueueWork(() -> {
+            ServerPlayer player = ctx.get().getSender();
+            Slot slot = player.containerMenu.getSlot(slotId);
+            ItemStack stack = slot.getItem();
 
-        CompoundTag stackTag = stack.getTag();
-        if (stackTag != null && ItemStackUtils.isFavorited(stack)) {
-            // kill empty tags
-            stackTag.remove("favorite");
-            if (stackTag.isEmpty()) {
-                stack.setTag(null);
+            CompoundTag stackTag = stack.getTag();
+            if (stackTag != null && ItemStackUtils.isFavorited(stack)) {
+                // kill empty tags
+                stackTag.remove("favorite");
+                if (stackTag.isEmpty()) {
+                    stack.setTag(null);
+                }
+            } else {
+                stack.getOrCreateTag().putBoolean("favorite", true);
             }
-        } else {
-            stack.getOrCreateTag().putBoolean("favorite", true);
-        }
+        });
         ctx.get().setPacketHandled(true);
     }
 }

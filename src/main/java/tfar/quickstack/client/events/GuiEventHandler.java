@@ -71,7 +71,7 @@ public class GuiEventHandler {
 	}
 
 	@SubscribeEvent
-	public <T extends AbstractContainerMenu> void onItemClick(ScreenEvent.MouseButtonPressed.Pre event) {
+	public static <T extends AbstractContainerMenu> void onItemClick(ScreenEvent.MouseButtonPressed.Pre event) {
 		if (!canDisplay(event.getScreen()) || !(event.getScreen() instanceof InventoryScreen)
 				|| !Screen.hasControlDown())
 			return;

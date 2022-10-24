@@ -33,6 +33,7 @@ public class DropOffGuiButton extends ExtendedButton {
 
     @Override
     public void playDownSound(SoundManager soundManager) {
+        super.playDownSound(soundManager);
     }
 
     @Override

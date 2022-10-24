@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import tfar.quickstack.DropOff;
 
-@Mod.EventBusSubscriber(modid = DropOff.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = DropOff.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class HotkeysRegistrar {
     public static final Lazy<KeyMapping> DUMP_MAPPING = Lazy
             .of(() -> new KeyMapping("dropoff.key.dump", GLFW.GLFW_KEY_X, DropOff.MOD_ID));
@@ -20,7 +20,6 @@ public class HotkeysRegistrar {
 
     @SubscribeEvent
     public static void registerBindings(RegisterKeyMappingsEvent e) {
-        DropOff.LOGGER.debug("Registering key bindings");
         e.register(DUMP_MAPPING.get());
         e.register(DEPOSIT_MAPPING.get());
     }

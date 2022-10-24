@@ -95,8 +95,6 @@ public class GuiEventHandler {
 		for (int k = 0; k < 3; ++k) {
 			for (int j = 0; j < 9; ++j) {
 				Slot slot = playerContainer.slots.get(j + (k + 1) * 9);
-				if (slot == null)
-					continue;
 				ItemStack stack = slot.getItem();
 				if (ItemStackUtils.isFavorited(stack)) {
 					int xoffset = 8;

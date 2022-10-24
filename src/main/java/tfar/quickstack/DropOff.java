@@ -16,7 +16,7 @@ import tfar.quickstack.util.LogMessageFactory;
 @Mod(DropOff.MOD_ID)
 public class DropOff {
 
-    public static final String MOD_ID = "dropoff";
+    public static final String MOD_ID = "quickstack";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID, LogMessageFactory.INSTANCE);
 
     public DropOff() {

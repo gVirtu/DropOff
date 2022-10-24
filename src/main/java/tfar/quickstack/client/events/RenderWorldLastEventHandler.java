@@ -16,8 +16,6 @@ import tfar.quickstack.config.DropOffConfig;
 @Mod.EventBusSubscriber(modid = DropOff.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class RenderWorldLastEventHandler {
 
-    public static final RenderWorldLastEventHandler INSTANCE = new RenderWorldLastEventHandler();
-
     @SubscribeEvent
     public static void onRenderWorldLastEvent(RenderLevelStageEvent event) {
         RendererCube.INSTANCE.tryToRender(event);

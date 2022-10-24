@@ -1,4 +1,4 @@
-package tfar.quickstack.networking;
+package tfar.quickstack.message;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;

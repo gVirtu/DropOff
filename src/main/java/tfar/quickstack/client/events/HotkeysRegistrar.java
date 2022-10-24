@@ -13,11 +13,14 @@ import tfar.quickstack.DropOff;
 
 @Mod.EventBusSubscriber(modid = DropOff.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class HotkeysRegistrar {
-    public static final Lazy<KeyMapping> DUMP_MAPPING = Lazy.of(() -> new KeyMapping("dropoff.key.dump", GLFW.GLFW_KEY_X, DropOff.MOD_ID));
-    public static final Lazy<KeyMapping> DEPOSIT_MAPPING = Lazy.of(() -> new KeyMapping("dropoff.key.deposit", GLFW.GLFW_KEY_C, DropOff.MOD_ID));
+    public static final Lazy<KeyMapping> DUMP_MAPPING = Lazy
+            .of(() -> new KeyMapping("dropoff.key.dump", GLFW.GLFW_KEY_X, DropOff.MOD_ID));
+    public static final Lazy<KeyMapping> DEPOSIT_MAPPING = Lazy
+            .of(() -> new KeyMapping("dropoff.key.deposit", GLFW.GLFW_KEY_C, DropOff.MOD_ID));
 
     @SubscribeEvent
     public static void registerBindings(RegisterKeyMappingsEvent e) {
+        DropOff.LOGGER.debug("Registering key bindings");
         e.register(DUMP_MAPPING.get());
         e.register(DEPOSIT_MAPPING.get());
     }

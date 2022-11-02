@@ -72,10 +72,9 @@ public class GuiEventHandler {
 
 	@SubscribeEvent
 	public static <T extends AbstractContainerMenu> void onItemClick(ScreenEvent.MouseButtonPressed.Pre event) {
-		if (!canDisplay(event.getScreen()) || !(event.getScreen() instanceof InventoryScreen)
+		if (!canDisplay(event.getScreen()) || !(event.getScreen() instanceof InventoryScreen containerScreen)
 				|| !Screen.hasControlDown())
 			return;
-		InventoryScreen containerScreen = (InventoryScreen) event.getScreen();
 
         Slot slotUnderMouse = containerScreen.getSlotUnderMouse();
         if (slotUnderMouse != null && slotUnderMouse.hasItem()) {

@@ -138,11 +138,33 @@ public class C2SPacketRequestDropoff {
             data.setSuccessful();
             itemsCounter += playerstack.getCount();
             ItemStack rem = playerstacks.extractItem(i, Integer.MAX_VALUE, false);
+            // Create array that will store all locations of empty slots in target inventory
+            int[] emptySlots = new int[target.getSlots()];
+            int numEmptySlots = 0;
             for (int j = 0; j < target.getSlots(); ++j) {
+                // If the current slot in chest inventory is empty, store in array as we will attempt to populate later if other stacks are full
+                if (target.getStackInSlot(j).isEmpty()) {
+                    emptySlots[numEmptySlots] = j;
+                    numEmptySlots++;
+                }
+                // If the current slot in chest inventory is different object, don't attempt to stack.
+                if (rem.getItem() != target.getStackInSlot(j).getItem()){
+                    continue;
+                }
+
                 rem = target.insertItem(j, rem, false);
                 if (rem.isEmpty())
                     break;
             }
+            // Attempt to populate all the empty slots
+            for (int j = 0; j < numEmptySlots; ++j){
+                rem = target.insertItem(emptySlots[j], rem, false);
+                if (rem.isEmpty())
+                    break;
+
+            }
+
+
             if (!rem.isEmpty()) {
                 itemsCounter -= rem.getCount();
                 playerstacks.insertItem(i, rem, false);

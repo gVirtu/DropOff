@@ -48,7 +48,7 @@ public class GuiEventHandler {
 			return;
 		}
 
-		AbstractContainerScreen containerScreen = (AbstractContainerScreen) event.getScreen();
+		AbstractContainerScreen<?> containerScreen = (AbstractContainerScreen<?>) event.getScreen();
 
 		boolean isCreative = Minecraft.getInstance().player.getAbilities().instabuild;
 
@@ -103,7 +103,7 @@ public class GuiEventHandler {
 							containerScreen.getGuiTop() + k * 18 + yoffset,
 							containerScreen.getGuiLeft() + j * 18 + 16 + xoffset,
 							containerScreen.getGuiTop() + k * 18 + 16 + yoffset,
-							0xFFFFBB00);
+							DropOffConfig.favorite_color_cache<<8);
 				}
 			}
 		}
@@ -118,7 +118,7 @@ public class GuiEventHandler {
 						containerScreen.getGuiTop() + yoffset,
 						containerScreen.getGuiLeft() + i * 18 + 16 + xoffset,
 						containerScreen.getGuiTop() + 16 + yoffset,
-						0xFFFFBB00);
+						DropOffConfig.favorite_color_cache<<8);
 			}
 		}
 
@@ -126,7 +126,7 @@ public class GuiEventHandler {
 	}
 
 	public static boolean canDisplay(Screen screen) {
-		return screen instanceof AbstractContainerScreen && canDisplay((AbstractContainerScreen) screen);
+		return screen instanceof AbstractContainerScreen && canDisplay((AbstractContainerScreen<?>) screen);
 	}
 
 	private static final Set<Class<?>> bad_classes = new HashSet<>();
@@ -153,8 +153,8 @@ public class GuiEventHandler {
 	@SubscribeEvent
 	public static void tooltip(ItemTooltipEvent e) {
 		ItemStack stack = e.getItemStack();
-		if (stack.hasTag() && stack.getTag().getBoolean("favorite")) {
-			e.getToolTip().add(Component.literal("Favorited!"));
+		if (ItemStackUtils.isFavorited(stack)) {
+			e.getToolTip().add(Component.translatable("dropoff.tooltip.favorited"));
 		}
 	}
 }

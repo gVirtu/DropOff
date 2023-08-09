@@ -84,6 +84,8 @@ public class DropOffConfig {
 
         public static ForgeConfigSpec.IntValue highlightDelay;
 
+        public static ForgeConfigSpec.ConfigValue<? extends String> favorite_color;
+
         private static ForgeConfigSpec.ConfigValue<List<String>> blacklistedTes;
 
         public static ForgeConfigSpec.ConfigValue<List<String>> whitelistedContainers;
@@ -99,6 +101,7 @@ public class DropOffConfig {
                     .define("Display Message", DefaultValues.displayMessage);
             showInventoryButton = builder.comment("Show button in the player inventory.")
                     .define("Show inventory button", DefaultValues.showInventoryButton);
+
 
             // Integers
             creativeInventoryButtonXOffset = builder.comment("Creative inventory button position width offset.")
@@ -123,6 +126,10 @@ public class DropOffConfig {
                     .defineInRange("Survival inventory button Y offset",
                             DefaultValues.survivalInventoryButtonYOffset, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
+            //other
+
+            favorite_color = builder.comment("favorites color background").define("favorite_color","#FFFFBB");
+
             blacklistedTes = builder.define("Blacklisted Block Entities", DefaultValues.blacklist);
 
             whitelistedContainers = builder.define("Whitelisted containers", DefaultValues.container_whitelist);
@@ -131,6 +138,7 @@ public class DropOffConfig {
     }
 
     public static List<BlockEntityType<?>> blockEntityBlacklist;
+    public static int favorite_color_cache;
 
     public static void onConfigChanged(ModConfigEvent event) {
         if (!event.getConfig().getModId().equals(DropOff.MOD_ID)) {
@@ -148,6 +156,8 @@ public class DropOffConfig {
                 })
                 .map(((ForgeRegistry<BlockEntityType<?>>) ForgeRegistries.BLOCK_ENTITY_TYPES)::getValue)
                 .collect(Collectors.toList());
+
+        favorite_color_cache = Integer.decode(Client.favorite_color.get());
 
         DropOff.LOGGER.info("Configuration changed.");
     }

@@ -2,5 +2,6 @@
   "dropoff.dump_nearby" : "Dump to Nearby Chests",
   "dropoff.quick_stack" : "Quick Stack to Nearby Chests",
   "dropoff.key.dump": "Dump",
-  "dropoff.key.deposit": "Deposit"
+  "dropoff.key.deposit": "Deposit",
+  "dropoff.tooltip.favorited" : "Favorited!"
 }

@@ -25,7 +25,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.ForgeRegistries;
 import tfar.quickstack.DropOff;
 import tfar.quickstack.client.ClientUtils;
-import tfar.quickstack.client.gui.DropOffGuiButton;
 import tfar.quickstack.config.DropOffConfig;
 import tfar.quickstack.networking.C2SFavoriteItemPacket;
 import tfar.quickstack.networking.PacketHandler;

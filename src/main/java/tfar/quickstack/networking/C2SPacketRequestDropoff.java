@@ -185,7 +185,7 @@ public class C2SPacketRequestDropoff {
         int minZ = (int) (playerZ - DropOffConfig.scanRadius.get());
         int maxZ = (int) (playerZ + DropOffConfig.scanRadius.get());
 
-        Level world = player.getLevel();
+        Level world = player.level();
         return BlockPos.betweenClosedStream(minX, minY, minZ, maxX, maxY, maxZ)
         .map(world::getBlockEntity)
         .filter(Objects::nonNull)

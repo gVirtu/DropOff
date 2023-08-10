@@ -39,8 +39,5 @@ public class ReportTask implements Runnable {
 
             ClientUtils.printToChat(message);
         }
-
-        ClientUtils.playSound(SoundEvents.UI_BUTTON_CLICK);
     }
-
 }

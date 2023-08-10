@@ -3,6 +3,7 @@ package tfar.quickstack.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -37,21 +38,21 @@ public class DropOffGuiButton extends ExtendedButton {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics poseStack, int mouseX, int mouseY, float partialTick) {
         Minecraft mc = Minecraft.getInstance();
-        this.visible = !(mc.screen instanceof CreativeModeInventoryScreen)
-                || ((CreativeModeInventoryScreen) Minecraft.getInstance().screen)
-                        .getSelectedTab() == CreativeModeTab.TAB_INVENTORY.getId();
+ //       this.visible = !(mc.screen instanceof CreativeModeInventoryScreen)
+ //               || ((CreativeModeInventoryScreen) Minecraft.getInstance().screen)
+  //          .getCurrentPage() == CreativeModeTab.TAB_INVENTORY.getId();
         super.render(poseStack, mouseX, mouseY, partialTick);
         if (visible)
             renderToolTip(poseStack, mouseX, mouseY);
     }
 
-    @Override
-    public void renderToolTip(@NotNull PoseStack poseStack, int mouseX, int mouseY) {
+    //@Override
+    public void renderToolTip(@NotNull GuiGraphics poseStack, int mouseX, int mouseY) {
         if (isHovered) {
             RenderSystem.enableDepthTest();
-            Minecraft.getInstance().screen.renderComponentTooltip(poseStack, hoverText, mouseX, mouseY);
+      //      Minecraft.getInstance().screen.renderComponentTooltip(poseStack, hoverText, mouseX, mouseY);
             RenderSystem.disableDepthTest();
         }
     }

@@ -1,18 +1,10 @@
 package tfar.quickstack.client.events;
 
-import static net.minecraft.client.gui.GuiComponent.fill;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -39,6 +31,10 @@ import tfar.quickstack.networking.C2SFavoriteItemPacket;
 import tfar.quickstack.networking.PacketHandler;
 import tfar.quickstack.util.ItemStackUtils;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Mod.EventBusSubscriber(modid = DropOff.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class GuiEventHandler {
 
@@ -59,15 +55,18 @@ public class GuiEventHandler {
 				+ (isCreative ? DropOffConfig.Client.creativeInventoryButtonYOffset.get()
 						: DropOffConfig.Client.survivalInventoryButtonYOffset.get());
 		if (DropOffConfig.Client.enableDump.get()) {
-			Button dump = new DropOffGuiButton(xPos, yPos, GuiEventHandler::actionPerformed, true);
-			event.addListener(dump);
+            Button dump = Button.builder(Component.literal("^"),b -> actionPerformed(true))
+                .pos(xPos, yPos).size(10,14).tooltip(Tooltip.create(Component.translatable("dropoff.dump_nearby"))).build();
+            event.addListener(dump);
 		}
-		Button deposit = new DropOffGuiButton(xPos + 12, yPos, GuiEventHandler::actionPerformed, false);
+
+		Button deposit = Button.builder(Component.literal("^"),b -> actionPerformed(false))
+        .pos(xPos + 12, yPos).size(10,14).tooltip(Tooltip.create(Component.translatable("dropoff.quick_stack"))).build();
 		event.addListener(deposit);
 	}
 
-	private static void actionPerformed(@Nonnull Button button) {
-		ClientUtils.sendNoSpectator(((DropOffGuiButton) button).dump);
+	private static void actionPerformed(boolean dump) {
+		ClientUtils.sendNoSpectator(dump);
 	}
 
 	@SubscribeEvent
@@ -90,7 +89,7 @@ public class GuiEventHandler {
 		if (!canDisplay(containerScreen))
 			return;
 		T playerContainer = containerScreen.getMenu();
-		PoseStack matrices = event.getPoseStack();
+		GuiGraphics matrices = event.getGuiGraphics();
 
 		for (int k = 0; k < 3; ++k) {
 			for (int j = 0; j < 9; ++j) {
@@ -99,7 +98,7 @@ public class GuiEventHandler {
 				if (ItemStackUtils.isFavorited(stack)) {
 					int xoffset = 8;
 					int yoffset = 84;
-					fill(matrices, containerScreen.getGuiLeft() + j * 18 + xoffset,
+					matrices.fill(containerScreen.getGuiLeft() + j * 18 + xoffset,
 							containerScreen.getGuiTop() + k * 18 + yoffset,
 							containerScreen.getGuiLeft() + j * 18 + 16 + xoffset,
 							containerScreen.getGuiTop() + k * 18 + 16 + yoffset,
@@ -114,7 +113,7 @@ public class GuiEventHandler {
 			if (ItemStackUtils.isFavorited(stack)) {
 				int xoffset = 8;
 				int yoffset = 142;
-				fill(matrices, containerScreen.getGuiLeft() + i * 18 + xoffset,
+				matrices.fill(containerScreen.getGuiLeft() + i * 18 + xoffset,
 						containerScreen.getGuiTop() + yoffset,
 						containerScreen.getGuiLeft() + i * 18 + 16 + xoffset,
 						containerScreen.getGuiTop() + 16 + yoffset,

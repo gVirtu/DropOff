@@ -34,11 +34,9 @@ public class RendererCubeTarget {
             return true;
         }
 
-        if (!(o instanceof RendererCubeTarget)) {
+        if (!(o instanceof RendererCubeTarget rendererCubeTarget)) {
             return false;
         }
-
-        RendererCubeTarget rendererCubeTarget = (RendererCubeTarget) o;
 
         return Objects.equals(blockPos, rendererCubeTarget.blockPos) &&
                 Objects.equals(color, rendererCubeTarget.color);

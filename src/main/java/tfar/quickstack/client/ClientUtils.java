@@ -35,13 +35,6 @@ public class ClientUtils {
         player.sendSystemMessage(textComponentString);
     }
 
-    public static void playSound(SoundEvent soundEvent) {
-        SoundManager soundHandler = Minecraft.getInstance().getSoundManager();
-        SimpleSoundInstance record = SimpleSoundInstance.forUI(soundEvent, 1.0f);
-
-        soundHandler.play(record);
-    }
-
     public static void sendNoSpectator(boolean dump) {
         if (Minecraft.getInstance().player.isSpectator()) {
             printToChat("Action not allowed in spectator mode.");

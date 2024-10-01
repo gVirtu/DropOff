@@ -97,11 +97,30 @@ public class GuiEventHandler {
 				if (ItemStackUtils.isFavorited(stack)) {
 					int xoffset = 8;
 					int yoffset = 84;
-					matrices.fill(containerScreen.getGuiLeft() + j * 18 + xoffset,
-							containerScreen.getGuiTop() + k * 18 + yoffset,
-							containerScreen.getGuiLeft() + j * 18 + 16 + xoffset,
-							containerScreen.getGuiTop() + k * 18 + 16 + yoffset,
-							DropOffConfig.favorite_color_cache<<8);
+					matrices.hLine(
+						containerScreen.getGuiLeft() + j * 18 + xoffset,
+						containerScreen.getGuiLeft() + j * 18 + 16 + xoffset,
+						containerScreen.getGuiTop() + k * 18 + yoffset,
+						DropOffConfig.favorite_color_cache<<8
+					);
+					matrices.hLine(
+						containerScreen.getGuiLeft() + j * 18 + xoffset,
+						containerScreen.getGuiLeft() + j * 18 + 16 + xoffset,
+						containerScreen.getGuiTop() + k * 18 + 16 + yoffset,
+						DropOffConfig.favorite_color_cache<<8
+					);
+					matrices.vLine(
+						containerScreen.getGuiLeft() + j * 18 + xoffset,
+						containerScreen.getGuiTop() + k * 18 + yoffset,
+						containerScreen.getGuiTop() + k * 18 + 16 + yoffset,
+						DropOffConfig.favorite_color_cache<<8
+					);
+					matrices.vLine(
+						containerScreen.getGuiLeft() + j * 18 + 16 + xoffset,
+						containerScreen.getGuiTop() + k * 18 + yoffset,
+						containerScreen.getGuiTop() + k * 18 + 16 + yoffset,
+						DropOffConfig.favorite_color_cache<<8
+					);
 				}
 			}
 		}
@@ -112,11 +131,31 @@ public class GuiEventHandler {
 			if (ItemStackUtils.isFavorited(stack)) {
 				int xoffset = 8;
 				int yoffset = 142;
-				matrices.fill(containerScreen.getGuiLeft() + i * 18 + xoffset,
+
+				matrices.hLine(
+						containerScreen.getGuiLeft() + i * 18 + xoffset,
+						containerScreen.getGuiLeft() + i * 18 + 16 + xoffset,
 						containerScreen.getGuiTop() + yoffset,
+						DropOffConfig.favorite_color_cache<<8
+					);
+					matrices.hLine(
+						containerScreen.getGuiLeft() + i * 18 + xoffset,
 						containerScreen.getGuiLeft() + i * 18 + 16 + xoffset,
 						containerScreen.getGuiTop() + 16 + yoffset,
-						DropOffConfig.favorite_color_cache<<8);
+						DropOffConfig.favorite_color_cache<<8
+					);
+					matrices.vLine(
+						containerScreen.getGuiLeft() + i * 18 + xoffset,
+						containerScreen.getGuiTop() + yoffset,
+						containerScreen.getGuiTop() + 16 + yoffset,
+						DropOffConfig.favorite_color_cache<<8
+					);
+					matrices.vLine(
+						containerScreen.getGuiLeft() + i * 18 + 16 + xoffset,
+						containerScreen.getGuiTop() + yoffset,
+						containerScreen.getGuiTop() + 16 + yoffset,
+						DropOffConfig.favorite_color_cache<<8
+					);
 			}
 		}
 
